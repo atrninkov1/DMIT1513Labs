@@ -9,9 +9,21 @@ public class FireGrenade : MonoBehaviour
     public Transform barrelEndLeft;
     public Transform barrelEndRight;
     public GameObject bullet;
-    public Text text;
+    public Text ammoPackText;
+    public Text ammoTextText;
+    public Transform target;
+    Vector3 targetPosition;
     bool rightArm = false;
     int ammo = 5;
+    public int Ammo
+    {
+        get
+        {
+            return ammo;
+        }
+    }
+
+    int ammoPacks = 0;
 
     bool used = false;
     bool firstActivation = true;
@@ -23,33 +35,52 @@ public class FireGrenade : MonoBehaviour
 
     float useStamp;
     float secondaryWeaponCooldownStamp;
+    private RaycastHit hit;
 
     void Update()
     {
-        text.text = "Ammo: " + ammo;
+        if (ammo > 5)
+        {
+            ammo -= 5;
+            ammoPacks++;
+        }
+        if (ammo <= 0)
+        {
+            if (ammoPacks > 0)
+            {
+                ammoPacks--;
+                ammo += 5;
+            }
+        }
+        ammoPackText.text = ammoPacks + " x";
+        ammoTextText.text = (ammoPacks * 5) + ammo + " x";
     }
 
     public void PrimaryFire()
     {
-        if (ammo > 0)
+        //if (ammo > 0)
+        //{
+        GameObject projectile = Instantiate(bullet);
+        if (rightArm)
         {
-            GameObject projectile = Instantiate(bullet);
-            if (rightArm)
-            {
-                projectile.transform.position = barrelEndRight.position;
-                rightArm = false;
-            }
-            else
-            {
-                projectile.transform.position = barrelEndLeft.position;
-                rightArm = true;
-            }
-            projectile.transform.rotation = transform.rotation;
-            Rigidbody rb = projectile.GetComponent<Rigidbody>();
-            rb.AddForce(transform.forward * 70);
-            ammo--;
-            GetComponent<AudioSource>().Play();
+            projectile.transform.position = barrelEndRight.position;
+            rightArm = false;
         }
+        else
+        {
+            projectile.transform.position = barrelEndLeft.position;
+            rightArm = true;
+        }
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        if (Physics.Raycast(transform.position, ray.direction, out hit, 1000))
+        {
+            targetPosition = hit.point;
+        }
+        Rigidbody rb = projectile.GetComponent<Rigidbody>();
+        rb.AddForce(targetPosition * 10000);
+        ammo--;
+        GetComponent<AudioSource>().Play();
+        //}
     }
 
     public void SecondaryFire()

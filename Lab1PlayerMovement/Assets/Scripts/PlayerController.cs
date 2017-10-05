@@ -71,6 +71,8 @@ public class PlayerController : MonoBehaviour
         secondaryFire = Input.GetAxis("Fire2");
         moveBoost = Input.GetAxis("Fire3");
 
+        Cursor.visible = false;
+
         transform.Translate(Vector3.forward * vInput * movementSpeed * Time.deltaTime * movementBoost);
 
         transform.Rotate(Vector3.up, hInput * rotationSpeed * Time.deltaTime);
