@@ -58,8 +58,8 @@ public class FireGrenade : MonoBehaviour
 
     public void PrimaryFire()
     {
-        //if (ammo > 0)
-        //{
+        if (ammo > 0)
+        {
         GameObject projectile = Instantiate(bullet);
         if (rightArm)
         {
@@ -71,16 +71,11 @@ public class FireGrenade : MonoBehaviour
             projectile.transform.position = barrelEndLeft.position;
             rightArm = true;
         }
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        if (Physics.Raycast(transform.position, ray.direction, out hit, 1000))
-        {
-            targetPosition = hit.point;
-        }
         Rigidbody rb = projectile.GetComponent<Rigidbody>();
-        rb.AddForce(targetPosition * 10000);
+        rb.AddForce(transform.forward * 100);
         ammo--;
         GetComponent<AudioSource>().Play();
-        //}
+        }
     }
 
     public void SecondaryFire()
