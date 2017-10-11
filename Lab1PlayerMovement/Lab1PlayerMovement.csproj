@@ -85,6 +85,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\DisplayAmmo.cs" />
+    <Compile Include="Assets\MenuOptions.cs" />
     <Compile Include="Assets\moveTarget.cs" />
     <Compile Include="Assets\Scripts\AmmoBox.cs" />
     <Compile Include="Assets\Scripts\Bullet.cs" />
