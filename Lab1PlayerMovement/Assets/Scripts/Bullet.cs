@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Bullet : MonoBehaviour
 {
+    public GameObject explosion;
+    public GameObject player;
 
     float destroyTime;
     float destroyDelay = 10;
@@ -33,6 +35,10 @@ public class Bullet : MonoBehaviour
         {
             collision.gameObject.GetComponent<PlayerController>().LoseHP();
         }
+        GameObject SoundPlayer = Instantiate(player);
+        player.GetComponent<AudioSource>().Play();
+        GameObject Explosion = Instantiate(explosion);
+        Explosion.transform.position = transform.position;
         Destroy(gameObject);
     }
 }

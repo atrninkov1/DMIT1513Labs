@@ -84,15 +84,17 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\DisplayAmmo.cs" />
-    <Compile Include="Assets\MenuOptions.cs" />
-    <Compile Include="Assets\moveTarget.cs" />
+    <Compile Include="Assets\DisplayWeaponName.cs" />
+    <Compile Include="Assets\explosion.cs" />
     <Compile Include="Assets\Scripts\AmmoBox.cs" />
     <Compile Include="Assets\Scripts\Bullet.cs" />
+    <Compile Include="Assets\Scripts\DisplayAmmo.cs" />
     <Compile Include="Assets\Scripts\FireGrenade.cs" />
     <Compile Include="Assets\Scripts\FirstPersonCamera.cs" />
     <Compile Include="Assets\Scripts\FollowCam.cs" />
+    <Compile Include="Assets\Scripts\MenuOptions.cs" />
     <Compile Include="Assets\Scripts\Move.cs" />
+    <Compile Include="Assets\Scripts\moveTarget.cs" />
     <Compile Include="Assets\Scripts\NewGame.cs" />
     <Compile Include="Assets\Scripts\PlayerController.cs" />
     <Compile Include="Assets\Scripts\StationaryTurret.cs" />
