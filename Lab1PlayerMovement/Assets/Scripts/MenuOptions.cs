@@ -26,6 +26,10 @@ public class MenuOptions : MonoBehaviour
 
     public void changeGunVolume(float value)
     {
-        mixer.SetFloat("Gunshot volume", value);
+        mixer.SetFloat("Gunshot Volume", value);
+    }
+    public void changeMasterVolume(float value)
+    {
+        mixer.SetFloat("Master Volume", value);
     }
 }

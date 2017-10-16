@@ -19,6 +19,8 @@ AudioMixerController:
     name: Background Volume
   - guid: eb87769e58ae64947a4acf1112af69bf
     name: Gunshot volume
+  - guid: acf076cf2974eef489ea4c8fb6261a67
+    name: Master Volume
   m_AudioMixerGroupViews:
   - guids:
     - d96009806578a29458a6cff28537925c
@@ -70,7 +72,7 @@ AudioMixerSnapshotController:
   m_FloatValues:
     9345719a3197e584697c35bfc707c8f0: 0
     a8649f2e0a4d2834e92776bf155265bb: -53
-    eb87769e58ae64947a4acf1112af69bf: -80
+    eb87769e58ae64947a4acf1112af69bf: 20
     32655e9e62f72e64a8717b373d3b2cbc: -80
     acf076cf2974eef489ea4c8fb6261a67: 20
   m_TransitionOverrides: {}
