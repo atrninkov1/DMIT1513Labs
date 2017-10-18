@@ -84,11 +84,14 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\AudioPlayerScript.cs" />
     <Compile Include="Assets\ContinueGame.cs" />
     <Compile Include="Assets\DisplaySecondaryWeapon.cs" />
     <Compile Include="Assets\DisplayWeaponName.cs" />
     <Compile Include="Assets\explosion.cs" />
     <Compile Include="Assets\GameMenu.cs" />
+    <Compile Include="Assets\HPBar.cs" />
+    <Compile Include="Assets\lookatPlayer.cs" />
     <Compile Include="Assets\Scripts\AmmoBox.cs" />
     <Compile Include="Assets\Scripts\Bullet.cs" />
     <Compile Include="Assets\Scripts\DisplayAmmo.cs" />
@@ -101,6 +104,7 @@
     <Compile Include="Assets\Scripts\NewGame.cs" />
     <Compile Include="Assets\Scripts\PlayerController.cs" />
     <Compile Include="Assets\Scripts\StationaryTurret.cs" />
+    <Compile Include="Assets\Scripts\Turret.cs" />
     <Compile Include="Assets\Scripts\TurretRadar.cs" />
     <Compile Include="Assets\Scripts\zoomIn.cs" />
   </ItemGroup>

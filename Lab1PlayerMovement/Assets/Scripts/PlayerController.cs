@@ -9,6 +9,7 @@ public class PlayerController : MonoBehaviour
     public Canvas cockpitCamera;
     public Image HPBar;
     public GameObject optionsPanel;
+    public GameObject continueObject;
 
     float vInput;
     float hInput;
@@ -54,6 +55,8 @@ public class PlayerController : MonoBehaviour
     float movementBoostCooldownStamp;
     float movementBoostCooldownTime = 10.0f;
 
+    bool pressingESC;
+
     GameObject weapon;
 
     // Use this for initialization
@@ -75,6 +78,15 @@ public class PlayerController : MonoBehaviour
         Cursor.visible = false;
 
         transform.Translate(Vector3.forward * vInput * movementSpeed * Time.deltaTime * movementBoost);
+
+        if ((vInput != 0 || hInput != 0) && !GetComponent<AudioSource>().isPlaying)
+        {
+            GetComponent<AudioSource>().Play();
+        }
+        else if (vInput == 0 && hInput == 0 && GetComponent<AudioSource>().isPlaying)
+        {
+            GetComponent<AudioSource>().Stop();
+        }
 
         transform.Rotate(Vector3.up, hInput * rotationSpeed * Time.deltaTime);
 
@@ -176,12 +188,18 @@ public class PlayerController : MonoBehaviour
         {
             SceneManager.LoadScene("EndScreen");
         }
-        if (Input.GetAxis("ToggleMenu") > 0)
+        if (Input.GetAxis("ToggleMenu") == 0)
         {
+            pressingESC = false;
+        }
+        if (Input.GetAxis("ToggleMenu") > 0 && !pressingESC)
+        {
+            pressingESC = true;
             Cursor.visible = true;
             Time.timeScale = 0;
             optionsPanel.SetActive(true);
             gameObject.SetActive(false);
+            continueObject.SetActive(true);
         }
     }
 

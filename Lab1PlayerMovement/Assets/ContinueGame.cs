@@ -6,21 +6,20 @@ public class ContinueGame : MonoBehaviour {
     public GameObject HUDPanel;
     public GameObject optionsPanel;
     public GameObject player;
-    bool stoppedPressingESC = false;
+    int counter = 0;
 
     void Update()
     {
-        if (Input.GetAxis("ToggleMenu") == 0 && !stoppedPressingESC)
+        counter++;
+        if (Input.GetAxisRaw("ToggleMenu") > 0 && counter>100)
         {
-            stoppedPressingESC = true;
-        }
-        if (Input.GetAxis("ToggleMenu") > 0 && stoppedPressingESC)
-        {
+            counter = 0;
             Cursor.visible = false;
             Time.timeScale = 1;
             HUDPanel.SetActive(true);
             player.SetActive(true);
             optionsPanel.SetActive(false);
+            gameObject.SetActive(false);
         }
     }
 
