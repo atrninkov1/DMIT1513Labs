@@ -878,20 +878,6 @@ Light:
   m_Lightmapping: 4
   m_AreaSize: {x: 1, y: 1}
   m_BounceIntensity: 1
-  m_FalloffTable:
-    m_Table[0]: 0
-    m_Table[1]: 0
-    m_Table[2]: 0
-    m_Table[3]: 0
-    m_Table[4]: 0
-    m_Table[5]: 0
-    m_Table[6]: 0
-    m_Table[7]: 0
-    m_Table[8]: 0
-    m_Table[9]: 0
-    m_Table[10]: 0
-    m_Table[11]: 0
-    m_Table[12]: 0
   m_ColorTemperature: 6570
   m_UseColorTemperature: 0
   m_ShadowRadius: 0
@@ -1783,6 +1769,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1717216222}
   - component: {fileID: 1717216223}
+  - component: {fileID: 1717216224}
   m_Layer: 5
   m_Name: Slider (2)
   m_TagString: Untagged
@@ -1870,6 +1857,18 @@ MonoBehaviour:
         m_CallState: 2
     m_TypeName: UnityEngine.UI.Slider+SliderEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
+--- !u!114 &1717216224
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1717216221}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f8a7b1ce9bc43c243829caa3529e6bde, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mixer: {fileID: 24100000, guid: 62a43db05e4eb354ba3f128c8d69032a, type: 2}
 --- !u!1 &1790226908
 GameObject:
   m_ObjectHideFlags: 0
@@ -2181,6 +2180,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1984159559}
   - component: {fileID: 1984159560}
+  - component: {fileID: 1984159561}
   m_Layer: 5
   m_Name: Slider (1)
   m_TagString: Untagged
@@ -2268,6 +2268,18 @@ MonoBehaviour:
         m_CallState: 2
     m_TypeName: UnityEngine.UI.Slider+SliderEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
+--- !u!114 &1984159561
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1984159558}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 355921f9439adc944845f84999b72e34, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mixer: {fileID: 24100000, guid: 62a43db05e4eb354ba3f128c8d69032a, type: 2}
 --- !u!1 &2014769787
 GameObject:
   m_ObjectHideFlags: 0
