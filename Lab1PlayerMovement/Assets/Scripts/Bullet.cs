@@ -29,7 +29,8 @@ public class Bullet : MonoBehaviour
     {
         if (collision.gameObject.tag == "StationaryTarget")
         {
-            Destroy(collision.gameObject);
+
+            collision.gameObject.SendMessage("loseHP");
         }
         if (collision.gameObject.tag == "Player")
         {

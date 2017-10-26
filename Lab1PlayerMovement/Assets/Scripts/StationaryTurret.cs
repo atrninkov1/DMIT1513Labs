@@ -2,18 +2,21 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class StationaryTurret : MonoBehaviour {
+public class StationaryTurret : Turret
+{
 
     public GameObject bullet;
     private float delayStampWeapon1;
     Transform target;
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
+    // Use this for initialization
+    void Start()
+    {
+
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
         if (transform.GetChild(0).GetComponent<TurretRadar>().player != null)
         {
             target = transform.GetChild(0).GetComponent<TurretRadar>().player.transform;
@@ -32,4 +35,6 @@ public class StationaryTurret : MonoBehaviour {
             }
         }
     }
+
+
 }

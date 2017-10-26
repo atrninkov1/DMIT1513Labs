@@ -8,6 +8,8 @@ public class PlayerController : MonoBehaviour
 {
     public Canvas cockpitCamera;
     public Image HPBar;
+    public GameObject optionsPanel;
+    public GameObject continueObject;
 
     float vInput;
     float hInput;
@@ -26,12 +28,12 @@ public class PlayerController : MonoBehaviour
     bool onCooldown = false;
     bool activated = false;
     bool weapon2PickedUp = false;
-    enum weaponSelected
+    public enum weaponSelected
     {
         weapon1,
         weapon2
     }
-    weaponSelected selectedWeapon = weaponSelected.weapon1;
+    public weaponSelected selectedWeapon = weaponSelected.weapon1;
 
     public enum cameraMode
     {
@@ -52,6 +54,8 @@ public class PlayerController : MonoBehaviour
     float movementBoostUseTime = 2.0f;
     float movementBoostCooldownStamp;
     float movementBoostCooldownTime = 10.0f;
+
+    bool pressingESC;
 
     GameObject weapon;
 
@@ -74,6 +78,15 @@ public class PlayerController : MonoBehaviour
         Cursor.visible = false;
 
         transform.Translate(Vector3.forward * vInput * movementSpeed * Time.deltaTime * movementBoost);
+
+        if ((vInput != 0 || hInput != 0) && !GetComponent<AudioSource>().isPlaying)
+        {
+            GetComponent<AudioSource>().Play();
+        }
+        else if (vInput == 0 && hInput == 0 && GetComponent<AudioSource>().isPlaying)
+        {
+            GetComponent<AudioSource>().Stop();
+        }
 
         transform.Rotate(Vector3.up, hInput * rotationSpeed * Time.deltaTime);
 
@@ -174,6 +187,19 @@ public class PlayerController : MonoBehaviour
         if (hp <= 0)
         {
             SceneManager.LoadScene("EndScreen");
+        }
+        if (Input.GetAxis("ToggleMenu") == 0)
+        {
+            pressingESC = false;
+        }
+        if (Input.GetAxis("ToggleMenu") > 0 && !pressingESC)
+        {
+            pressingESC = true;
+            Cursor.visible = true;
+            Time.timeScale = 0;
+            optionsPanel.SetActive(true);
+            gameObject.SetActive(false);
+            continueObject.SetActive(true);
         }
     }
 
