@@ -162,4 +162,15 @@ public class FireGrenade : MonoBehaviour
     {
         this.ammo += ammo;
     }
+
+    public void stopParticles()
+    {
+        barrelEndLeft.transform.GetChild(0).GetComponent<ParticleSystem>().Stop();
+        barrelEndRight.transform.GetChild(0).GetComponent<ParticleSystem>().Stop();
+    }
+    public void playParticles()
+    {
+        barrelEndLeft.transform.GetChild(0).GetComponent<ParticleSystem>().Play();
+        barrelEndRight.transform.GetChild(0).GetComponent<ParticleSystem>().Play();
+    }
 }

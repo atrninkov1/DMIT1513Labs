@@ -129,11 +129,17 @@ public class PlayerController : MonoBehaviour
         if (secondaryFire > 0 && Time.time > delayStampWeapon2 + 0.15 && selectedWeapon == weaponSelected.weapon1)
         {
             weapon.GetComponent<FireGrenade>().SecondaryFire();
+            weapon.GetComponent<FireGrenade>().playParticles();
             delayStampWeapon2 = Time.time;
         }
         else if (secondaryFire > 0 && selectedWeapon == weaponSelected.weapon2)
         {
             weapon.GetComponent<FireGrenade>().SecondaryFireWeapon2();
+            weapon.GetComponent<FireGrenade>().stopParticles();
+        }
+        if (secondaryFire == 0)
+        {
+            weapon.GetComponent<FireGrenade>().stopParticles();
         }
 
         weapon.transform.Rotate(Input.GetAxis("Mouse Y") * -10, 0, 0);
