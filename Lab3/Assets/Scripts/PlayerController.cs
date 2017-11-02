@@ -7,6 +7,9 @@ public class PlayerController : MonoBehaviour
 {
 
     public List<NavMeshAgent> agents;
+    public float ScrollSpeed = 3.0f;
+    [SerializeField]
+    Material green;
     RaycastHit hit;
 
     // Use this for initialization
@@ -23,16 +26,25 @@ public class PlayerController : MonoBehaviour
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             if (Physics.Raycast(transform.position, ray.direction, out hit, 1000))
             {
-                print(hit.collider.gameObject.name);
                 if (hit.collider.gameObject.tag == "PlayerControlled")
                 {
                     agents.Add(hit.collider.gameObject.GetComponent<NavMeshAgent>());
                 }
-                if (hit.collider.gameObject.tag == "Floor" && agents.Count > 0)
+                else if (hit.collider.gameObject.tag == "Floor" && agents.Count > 0)
                 {
                     for (int i = 0; i < agents.Count; i++)
                     {
                         agents[i].destination = hit.point;
+                        agents[i].gameObject.GetComponent<PlayerGuyScript>().target = null;
+                    }
+                }
+                else if (hit.collider.gameObject.tag == "Enemy" && agents.Count > 0)
+                {
+                    for (int i = 0; i < agents.Count; i++)
+                    {
+                        agents[i].destination = hit.collider.gameObject.transform.position;
+                        agents[i].stoppingDistance = agents[i].GetComponent<PlayerGuyScript>().range;
+                        agents[i].gameObject.GetComponent<PlayerGuyScript>().target = hit.collider.gameObject;
                     }
                 }
             }
@@ -48,22 +60,34 @@ public class PlayerController : MonoBehaviour
             {
                 agents[i].gameObject.GetComponent<Animator>().SetBool("Moving", false);
             }
+            if (agents[i].GetComponent<PlayerGuyScript>().target != null && 
+                Vector3.Distance(agents[i].GetComponent<PlayerGuyScript>().target.transform.position, agents[i].transform.position) <= 
+                agents[i].GetComponent<PlayerGuyScript>().range)
+            {
+                agents[i].gameObject.GetComponent<Animator>().SetBool("Attacking", true);
+            }
+            else if (agents[i].GetComponent<PlayerGuyScript>().target == null ||
+                Vector3.Distance(agents[i].GetComponent<PlayerGuyScript>().target.transform.position, agents[i].transform.position) > 
+                agents[i].GetComponent<PlayerGuyScript>().range)
+            {
+                agents[i].gameObject.GetComponent<Animator>().SetBool("Attacking", false);
+            }
         }
         if (Input.mousePosition.y >= Screen.height * 0.95)
         {
-            transform.Translate(Vector3.forward * Time.deltaTime, Space.World);
+            transform.Translate(Vector3.forward * Time.deltaTime * ScrollSpeed, Space.World);
         }
         else if (Input.mousePosition.y <= Screen.height * 0.05)
         {
-            transform.Translate(Vector3.forward * -Time.deltaTime, Space.World);
+            transform.Translate(Vector3.forward * -Time.deltaTime * ScrollSpeed, Space.World);
         }
         else if (Input.mousePosition.x >= Screen.width * 0.95)
         {
-            transform.Translate(Vector3.right * Time.deltaTime, Space.World);
+            transform.Translate(Vector3.right * Time.deltaTime * ScrollSpeed, Space.World);
         }
         else if (Input.mousePosition.x <= Screen.width * 0.05)
         {
-            transform.Translate(Vector3.right * -Time.deltaTime, Space.World);
+            transform.Translate(Vector3.right * -Time.deltaTime * ScrollSpeed, Space.World);
         }
     }
 }
