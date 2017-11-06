@@ -28,12 +28,14 @@ public class PlayerController : MonoBehaviour
             {
                 if (hit.collider.gameObject.tag == "PlayerControlled")
                 {
+                    hit.collider.gameObject.GetComponent<PlayerGuyScript>().selectedIndicator.GetComponent<MeshRenderer>().sharedMaterial = green;
                     agents.Add(hit.collider.gameObject.GetComponent<NavMeshAgent>());
                 }
                 else if (hit.collider.gameObject.tag == "Floor" && agents.Count > 0)
                 {
                     for (int i = 0; i < agents.Count; i++)
                     {
+                        agents[i].stoppingDistance = 0;
                         agents[i].destination = hit.point;
                         agents[i].gameObject.GetComponent<PlayerGuyScript>().target = null;
                     }
@@ -64,6 +66,7 @@ public class PlayerController : MonoBehaviour
                 Vector3.Distance(agents[i].GetComponent<PlayerGuyScript>().target.transform.position, agents[i].transform.position) <= 
                 agents[i].GetComponent<PlayerGuyScript>().range)
             {
+                agents[i].transform.LookAt(agents[i].GetComponent<PlayerGuyScript>().target.transform.position);
                 agents[i].gameObject.GetComponent<Animator>().SetBool("Attacking", true);
             }
             else if (agents[i].GetComponent<PlayerGuyScript>().target == null ||
