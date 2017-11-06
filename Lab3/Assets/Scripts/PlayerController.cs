@@ -10,7 +10,11 @@ public class PlayerController : MonoBehaviour
     public float ScrollSpeed = 3.0f;
     [SerializeField]
     Material green;
+    [SerializeField]
+    Material red;
     RaycastHit hit;
+    [SerializeField]
+    GameObject pauseCanvas;
 
     // Use this for initialization
     void Start()
@@ -28,8 +32,21 @@ public class PlayerController : MonoBehaviour
             {
                 if (hit.collider.gameObject.tag == "PlayerControlled")
                 {
-                    hit.collider.gameObject.GetComponent<PlayerGuyScript>().selectedIndicator.GetComponent<MeshRenderer>().sharedMaterial = green;
-                    agents.Add(hit.collider.gameObject.GetComponent<NavMeshAgent>());
+                    if (Input.GetAxis("MultiSelect") > 0)
+                    {
+                        hit.collider.gameObject.GetComponent<PlayerGuyScript>().selectedIndicator.GetComponent<MeshRenderer>().sharedMaterial = green;
+                        agents.Add(hit.collider.gameObject.GetComponent<NavMeshAgent>());
+                    }
+                    else
+                    {
+                        foreach (var item in agents)
+                        {
+                            item.GetComponent<PlayerGuyScript>().selectedIndicator.GetComponent<MeshRenderer>().sharedMaterial = red;
+                        }
+                        hit.collider.gameObject.GetComponent<PlayerGuyScript>().selectedIndicator.GetComponent<MeshRenderer>().sharedMaterial = green;
+                        agents.Clear();
+                        agents.Add(hit.collider.gameObject.GetComponent<NavMeshAgent>());
+                    }
                 }
                 else if (hit.collider.gameObject.tag == "Floor" && agents.Count > 0)
                 {
@@ -91,6 +108,11 @@ public class PlayerController : MonoBehaviour
         else if (Input.mousePosition.x <= Screen.width * 0.05)
         {
             transform.Translate(Vector3.right * -Time.deltaTime * ScrollSpeed, Space.World);
+        }
+        if (Input.GetAxis("TogglePauseMenu") > 0)
+        {
+            pauseCanvas.SetActive(true);
+            Time.timeScale = 0;
         }
     }
 }
