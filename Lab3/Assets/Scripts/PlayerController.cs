@@ -144,12 +144,18 @@ public class PlayerController : MonoBehaviour
             indicator.transform.position = agents[i].destination;
         }
 
-        if (Input.GetMouseButton(0))
+        if (Input.GetMouseButtonDown(0))
         {
+            mousePosition1 = Input.mousePosition;
             isSelecting = true;
         }
+
         if (Input.GetMouseButtonUp(0))
             isSelecting = false;
+
+        GameObject[] playerMinions = GameObject.FindGameObjectsWithTag("PlayerControlled");
+
+
     }
     void DrawScreenRect(Rect rect, Color color)
     {
@@ -180,6 +186,32 @@ public class PlayerController : MonoBehaviour
         var bottomRight = Vector3.Max(screenPosition1, screenPosition2);
         // Create Rect
         return Rect.MinMaxRect(topLeft.x, topLeft.y, bottomRight.x, bottomRight.y);
+    }
+
+    Bounds GetViewportBounds(Vector3 screenPosition1, Vector3 screenPosition2)
+    {
+        var v1 = Camera.main.ScreenToViewportPoint(screenPosition1);
+        var v2 = Camera.main.ScreenToViewportPoint(screenPosition2);
+        var min = Vector3.Min(v1, v2);
+        var max = Vector3.Max(v1, v2);
+        min.z = Camera.main.nearClipPlane;
+        max.z = Camera.main.farClipPlane;
+
+        var bounds = new Bounds();
+        bounds.SetMinMax(min, max);
+        return bounds;
+    }
+
+    bool IsWithinSelectionBounds(GameObject gameObject)
+    {
+        if (!isSelecting)
+            return false;
+
+        var camera = Camera.main;
+        var viewportBounds = GetViewportBounds(mousePosition1, Input.mousePosition);
+
+        return viewportBounds.Contains(
+            camera.WorldToViewportPoint(gameObject.transform.position));
     }
 
     void OnGUI()
