@@ -30,5 +30,9 @@ public class EnemyController : MonoBehaviour
             myAgent.destination = waypoints[currentWaypoint].transform.position;
             myAgent.stoppingDistance = 3.0f;
         }
+        if (getCom)
+        {
+
+        }
     }
 }

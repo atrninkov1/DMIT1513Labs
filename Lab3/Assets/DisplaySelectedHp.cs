@@ -16,9 +16,10 @@ public class DisplaySelectedHp : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
-        GetComponent<RectTransform>().localScale = new Vector3(playerController.selected.GetComponent<EnemyHPScript>().currentHP / playerController.selected.GetComponent<EnemyHPScript>().maxHP,
+        if (playerController.selected != null)
+        {
+            GetComponent<RectTransform>().localScale = new Vector3(playerController.selected.GetComponent<EnemyHPScript>().currentHP / playerController.selected.GetComponent<EnemyHPScript>().maxHP,
             GetComponent<RectTransform>().localScale.y, GetComponent<RectTransform>().localScale.z);
-
+        }
     }
 }

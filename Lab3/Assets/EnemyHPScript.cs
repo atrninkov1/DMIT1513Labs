@@ -9,6 +9,18 @@ public class EnemyHPScript : MonoBehaviour {
     [SerializeField]
     GameObject deathScream;
     int hp = 1000;
+    GameObject target;
+    public GameObject Target
+    {
+        get
+        {
+            return target;
+        }
+        set
+        {
+            target = value;
+        }
+    }
     public float maxHP
     {
         get
@@ -24,14 +36,20 @@ public class EnemyHPScript : MonoBehaviour {
         }
     }
 
+    public void increaseHP()
+    {
+        hp += 300;
+    }
+
 	// Use this for initialization
 	void Start () {
         deathParticle.SetActive(true);
     }
 	
-	internal void TakeDamage(int damage)
+	internal void TakeDamage(int damage, GameObject target)
     {
         hp -= damage;
+        this.target = target;
         GetComponent<ParticleSystem>().Play();
         GetComponent<AudioSource>().Play();
         if (hp <= 0)
@@ -44,5 +62,10 @@ public class EnemyHPScript : MonoBehaviour {
             sound.GetComponent<AudioSource>().Play();
             Destroy(gameObject);
         }
+    }
+
+    internal void RemoveTarget()
+    {
+        target = null;
     }
 }

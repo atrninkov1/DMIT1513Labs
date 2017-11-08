@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 
 public class MenuOptions : MonoBehaviour
 {
-
+    public GameObject menuCanvas;
     public AudioMixer mixer;
 
     public void PlayGame()
@@ -21,7 +21,7 @@ public class MenuOptions : MonoBehaviour
 
     public void exitMenu()
     {
-        gameObject.SetActive(false);
+        menuCanvas.SetActive(false);
         Time.timeScale = 1;
     }
 

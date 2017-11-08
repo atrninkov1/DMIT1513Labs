@@ -46,6 +46,13 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        for (int i = 0; i < agents.Count; i++)
+        {
+            if (agents[i] == null)
+            {
+                agents.Remove(agents[i]);
+            }
+        }
         if (Input.GetMouseButtonDown(0))
         {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -137,13 +144,14 @@ public class PlayerController : MonoBehaviour
             pauseCanvas.SetActive(true);
             Time.timeScale = 0;
         }
-
-        for (int i = 0; i < agents.Count; i++)
+        if (GameObject.FindGameObjectsWithTag("Flag").Length == 0)
         {
-            GameObject indicator = Instantiate(flag);
-            indicator.transform.position = agents[i].destination;
+            for (int i = 0; i < agents.Count; i++)
+            {
+                GameObject indicator = Instantiate(flag);
+                indicator.transform.position = agents[i].destination;
+            }
         }
-
         if (Input.GetMouseButtonDown(0))
         {
             mousePosition1 = Input.mousePosition;
@@ -155,7 +163,14 @@ public class PlayerController : MonoBehaviour
 
         GameObject[] playerMinions = GameObject.FindGameObjectsWithTag("PlayerControlled");
 
-
+        for (int i = 0; i < playerMinions.Length; i++)
+        {
+            if (IsWithinSelectionBounds(playerMinions[i]) && playerMinions[i].GetComponent<NavMeshAgent>() != null)
+            {
+                playerMinions[i].GetComponent<PlayerGuyScript>().selectedIndicator.GetComponent<MeshRenderer>().sharedMaterial = green;
+                agents.Add(playerMinions[i].GetComponent<NavMeshAgent>());
+            }
+        }
     }
     void DrawScreenRect(Rect rect, Color color)
     {

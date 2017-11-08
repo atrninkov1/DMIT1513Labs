@@ -8,6 +8,7 @@ TagManager:
   - Floor
   - Enemy
   - Flag
+  - HealthPack
   layers:
   - Default
   - TransparentFX
