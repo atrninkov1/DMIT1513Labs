@@ -6,6 +6,7 @@ TagManager:
   tags:
   - PlayerMinion
   - Floor
+  - Enemy
   layers:
   - Default
   - TransparentFX
