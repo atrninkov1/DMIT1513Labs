@@ -9,6 +9,20 @@ public class EnemyHPScript : MonoBehaviour {
     [SerializeField]
     GameObject deathScream;
     int hp = 1000;
+    public float maxHP
+    {
+        get
+        {
+            return 1000;
+        }
+    }
+    public float currentHP
+    {
+        get
+        {
+            return hp;
+        }
+    }
 
 	// Use this for initialization
 	void Start () {

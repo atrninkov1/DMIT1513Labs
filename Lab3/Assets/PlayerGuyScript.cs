@@ -22,7 +22,10 @@ public class PlayerGuyScript : MonoBehaviour
         {
             GameObject projectile = Instantiate(arrow);
             projectile.transform.position = weapon.transform.position + (transform.forward * 4);
-            projectile.transform.LookAt(target.transform);
+            if (target.transform != null)
+            {
+                projectile.transform.LookAt(target.transform);
+            }
             projectile.GetComponent<Rigidbody>().AddForce(transform.forward * 10000);
         }
     }
