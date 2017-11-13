@@ -45,7 +45,11 @@ MonoBehaviour:
   m_MinSize: {x: 679, y: 492}
   m_MaxSize: {x: 14002, y: 14042}
   vertical: 0
+<<<<<<< HEAD
   controlID: 11
+=======
+  controlID: 51
+>>>>>>> 23b3dc27d286be64c4f6190fe4b63a8f68d1d493
 --- !u!114 &3
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -212,7 +216,7 @@ MonoBehaviour:
   m_MinSize: {x: 404, y: 492}
   m_MaxSize: {x: 10002, y: 14042}
   vertical: 1
-  controlID: 12
+  controlID: 52
 --- !u!114 &10
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -236,7 +240,7 @@ MonoBehaviour:
   m_MinSize: {x: 404, y: 221}
   m_MaxSize: {x: 8004, y: 4021}
   vertical: 0
-  controlID: 13
+  controlID: 53
 --- !u!114 &11
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -294,7 +298,11 @@ MonoBehaviour:
   m_MixersTreeState:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 
+<<<<<<< HEAD
     m_LastClickedID: 10380
+=======
+    m_LastClickedID: 12542
+>>>>>>> 23b3dc27d286be64c4f6190fe4b63a8f68d1d493
     m_ExpandedIDs: 12eb343c
     m_RenameOverlay:
       m_UserAcceptedRename: 0
@@ -365,7 +373,7 @@ MonoBehaviour:
       splitSize: 6
       xOffset: 0
     m_HorizontalSplitter:
-      ID: 2006
+      ID: 381
       splitterInitialOffset: 0
       currentActiveSplitter: -1
       realSizes: dd01000059040000
@@ -556,19 +564,33 @@ MonoBehaviour:
     m_ShowAllHits: 0
     m_SearchArea: 0
     m_Folders:
+<<<<<<< HEAD
     - Assets
   m_ViewMode: 1
   m_StartGridSize: 64
   m_LastFolders:
   - Assets
+=======
+    - Assets/_Scenes
+  m_ViewMode: 1
+  m_StartGridSize: 64
+  m_LastFolders:
+  - Assets/_Scenes
+>>>>>>> 23b3dc27d286be64c4f6190fe4b63a8f68d1d493
   m_LastFoldersGridSize: -1
   m_LastProjectPath: C:\Users\atrninkov1\Documents\GitHub\DMIT1513Labs\Lab3
   m_IsLocked: 0
   m_FolderTreeState:
     scrollPos: {x: 0, y: 5}
+<<<<<<< HEAD
     m_SelectedIDs: 1c340000
     m_LastClickedID: 13340
     m_ExpandedIDs: 000000001c3400007c340000de3400008e35000000ca9a3bffffff7f
+=======
+    m_SelectedIDs: 9a270000
+    m_LastClickedID: 10138
+    m_ExpandedIDs: 000000008026000010270000062800007e29000000ca9a3bffffff7f
+>>>>>>> 23b3dc27d286be64c4f6190fe4b63a8f68d1d493
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -596,7 +618,11 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 
     m_LastClickedID: 0
+<<<<<<< HEAD
     m_ExpandedIDs: 000000001c3400007c340000de3400008e350000
+=======
+    m_ExpandedIDs: 000000008026000010270000062800007e290000
+>>>>>>> 23b3dc27d286be64c4f6190fe4b63a8f68d1d493
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -624,7 +650,7 @@ MonoBehaviour:
     m_SelectedInstanceIDs: 
     m_LastClickedInstanceID: 0
     m_HadKeyboardFocusLastEvent: 1
-    m_ExpandedInstanceIDs: 6022000084230000ca210000cc210000f02100004642000062220000d0210000
+    m_ExpandedInstanceIDs: 6022000084230000ca210000cc210000f02100004642000062220000d0210000fe300000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -712,9 +738,15 @@ MonoBehaviour:
     height: 585
   m_TreeViewState:
     scrollPos: {x: 0, y: 0}
+<<<<<<< HEAD
     m_SelectedIDs: aeb7ffff
     m_LastClickedID: -18514
     m_ExpandedIDs: 72d7ffff0000000090360000
+=======
+    m_SelectedIDs: 
+    m_LastClickedID: 0
+    m_ExpandedIDs: 98f4feff24f5feff84f6feff88f6feff8cf6feff1afcffff00000000022a0000322b0000
+>>>>>>> 23b3dc27d286be64c4f6190fe4b63a8f68d1d493
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -764,14 +796,24 @@ MonoBehaviour:
     width: 1353
     height: 585
   m_SceneLighting: 1
+<<<<<<< HEAD
   lastFramingTime: 658.8032381406261
+=======
+  lastFramingTime: 10074.583154801445
+>>>>>>> 23b3dc27d286be64c4f6190fe4b63a8f68d1d493
   m_2DMode: 0
   m_isRotationLocked: 0
   m_AudioPlay: 0
   m_Position:
+<<<<<<< HEAD
     m_Target: {x: 676.5, y: 283.5, z: 0}
     speed: 2
     m_Value: {x: 676.5, y: 283.5, z: 0}
+=======
+    m_Target: {x: 331.54932, y: 353.29132, z: 50.10074}
+    speed: 2
+    m_Value: {x: 331.54932, y: 353.29132, z: 50.10074}
+>>>>>>> 23b3dc27d286be64c4f6190fe4b63a8f68d1d493
   m_RenderMode: 0
   m_ValidateTrueMetals: 0
   m_SceneViewState:
@@ -794,13 +836,21 @@ MonoBehaviour:
       speed: 2
       m_Value: 0
   m_Rotation:
-    m_Target: {x: 0.08986376, y: -0.08467533, z: 0.0077071767, w: 0.9923838}
+    m_Target: {x: -0.2928851, y: -0.023910427, z: 0.007192841, w: -0.9559031}
     speed: 2
+<<<<<<< HEAD
     m_Value: {x: -0.08986377, y: 0.08467533, z: -0.0077071767, w: -0.99238384}
   m_Size:
     m_Target: 637.1502
     speed: 2
     m_Value: 637.1502
+=======
+    m_Value: {x: -0.29286227, y: -0.023908563, z: 0.00719228, w: -0.9558286}
+  m_Size:
+    m_Target: 1167.732
+    speed: 2
+    m_Value: 1167.732
+>>>>>>> 23b3dc27d286be64c4f6190fe4b63a8f68d1d493
   m_Ortho:
     m_Target: 0
     speed: 2

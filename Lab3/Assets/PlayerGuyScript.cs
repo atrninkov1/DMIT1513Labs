@@ -22,8 +22,29 @@ public class PlayerGuyScript : MonoBehaviour
         {
             GameObject projectile = Instantiate(arrow);
             projectile.transform.position = weapon.transform.position + (transform.forward * 4);
-            projectile.transform.LookAt(target.transform);
+            projectile.GetComponent<Projectile>().sourceGameObject = gameObject;
+            if (target != null)
+            {
+                projectile.transform.LookAt(target.transform);
+            }
             projectile.GetComponent<Rigidbody>().AddForce(transform.forward * 10000);
+        }
+    }
+
+    void MelleeAttack()
+    {
+        if (range < 50 && target != null)
+        {
+            target.GetComponent<EnemyHPScript>().TakeDamage(200, gameObject);
+        }
+    }
+
+    void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.tag=="HealthPack")
+        {
+            GetComponent<EnemyHPScript>().increaseHP();
+            Destroy(collision.gameObject);
         }
     }
 }

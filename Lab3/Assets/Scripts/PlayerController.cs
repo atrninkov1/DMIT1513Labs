@@ -15,6 +15,27 @@ public class PlayerController : MonoBehaviour
     RaycastHit hit;
     [SerializeField]
     GameObject pauseCanvas;
+    public GameObject selected;
+    [SerializeField]
+    GameObject flag;
+    private bool isSelecting;
+    static Texture2D _whiteTexture;
+    public static Texture2D WhiteTexture
+    {
+        get
+        {
+            if (_whiteTexture == null)
+            {
+                _whiteTexture = new Texture2D(1, 1);
+                _whiteTexture.SetPixel(0, 0, Color.white);
+                _whiteTexture.Apply();
+            }
+
+            return _whiteTexture;
+        }
+    }
+
+    Vector3 mousePosition1;
 
     // Use this for initialization
     void Start()
@@ -25,6 +46,13 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        for (int i = 0; i < agents.Count; i++)
+        {
+            if (agents[i] == null)
+            {
+                agents.Remove(agents[i]);
+            }
+        }
         if (Input.GetMouseButtonDown(0))
         {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -47,6 +75,7 @@ public class PlayerController : MonoBehaviour
                         agents.Clear();
                         agents.Add(hit.collider.gameObject.GetComponent<NavMeshAgent>());
                     }
+                    selected = hit.collider.gameObject;
                 }
                 else if (hit.collider.gameObject.tag == "Floor" && agents.Count > 0)
                 {
@@ -65,6 +94,7 @@ public class PlayerController : MonoBehaviour
                         agents[i].stoppingDistance = agents[i].GetComponent<PlayerGuyScript>().range;
                         agents[i].gameObject.GetComponent<PlayerGuyScript>().target = hit.collider.gameObject;
                     }
+                    selected = hit.collider.gameObject;
                 }
             }
         }
@@ -79,15 +109,15 @@ public class PlayerController : MonoBehaviour
             {
                 agents[i].gameObject.GetComponent<Animator>().SetBool("Moving", false);
             }
-            if (agents[i].GetComponent<PlayerGuyScript>().target != null && 
-                Vector3.Distance(agents[i].GetComponent<PlayerGuyScript>().target.transform.position, agents[i].transform.position) <= 
+            if (agents[i].GetComponent<PlayerGuyScript>().target != null &&
+                Vector3.Distance(agents[i].GetComponent<PlayerGuyScript>().target.transform.position, agents[i].transform.position) <=
                 agents[i].GetComponent<PlayerGuyScript>().range)
             {
                 agents[i].transform.LookAt(agents[i].GetComponent<PlayerGuyScript>().target.transform.position);
                 agents[i].gameObject.GetComponent<Animator>().SetBool("Attacking", true);
             }
             else if (agents[i].GetComponent<PlayerGuyScript>().target == null ||
-                Vector3.Distance(agents[i].GetComponent<PlayerGuyScript>().target.transform.position, agents[i].transform.position) > 
+                Vector3.Distance(agents[i].GetComponent<PlayerGuyScript>().target.transform.position, agents[i].transform.position) >
                 agents[i].GetComponent<PlayerGuyScript>().range)
             {
                 agents[i].gameObject.GetComponent<Animator>().SetBool("Attacking", false);
@@ -113,6 +143,100 @@ public class PlayerController : MonoBehaviour
         {
             pauseCanvas.SetActive(true);
             Time.timeScale = 0;
+        }
+        if (GameObject.FindGameObjectsWithTag("Flag").Length == 0)
+        {
+            for (int i = 0; i < agents.Count; i++)
+            {
+                GameObject indicator = Instantiate(flag);
+                indicator.transform.position = agents[i].destination;
+            }
+        }
+        if (Input.GetMouseButtonDown(0))
+        {
+            mousePosition1 = Input.mousePosition;
+            isSelecting = true;
+        }
+
+        if (Input.GetMouseButtonUp(0))
+            isSelecting = false;
+
+        GameObject[] playerMinions = GameObject.FindGameObjectsWithTag("PlayerControlled");
+
+        for (int i = 0; i < playerMinions.Length; i++)
+        {
+            if (IsWithinSelectionBounds(playerMinions[i]) && playerMinions[i].GetComponent<NavMeshAgent>() != null)
+            {
+                playerMinions[i].GetComponent<PlayerGuyScript>().selectedIndicator.GetComponent<MeshRenderer>().sharedMaterial = green;
+                agents.Add(playerMinions[i].GetComponent<NavMeshAgent>());
+            }
+        }
+    }
+    void DrawScreenRect(Rect rect, Color color)
+    {
+        GUI.color = color;
+        GUI.DrawTexture(rect, WhiteTexture);
+        GUI.color = Color.white;
+    }
+
+    void DrawScreenRectBorder(Rect rect, float thickness, Color color)
+    {
+        // Top
+        DrawScreenRect(new Rect(rect.xMin, rect.yMin, rect.width, thickness), color);
+        // Left
+        DrawScreenRect(new Rect(rect.xMin, rect.yMin, thickness, rect.height), color);
+        // Right
+        DrawScreenRect(new Rect(rect.xMax - thickness, rect.yMin, thickness, rect.height), color);
+        // Bottom
+        DrawScreenRect(new Rect(rect.xMin, rect.yMax - thickness, rect.width, thickness), color);
+    }
+
+    Rect GetScreenRect(Vector3 screenPosition1, Vector3 screenPosition2)
+    {
+        // Move origin from bottom left to top left
+        screenPosition1.y = Screen.height - screenPosition1.y;
+        screenPosition2.y = Screen.height - screenPosition2.y;
+        // Calculate corners
+        var topLeft = Vector3.Min(screenPosition1, screenPosition2);
+        var bottomRight = Vector3.Max(screenPosition1, screenPosition2);
+        // Create Rect
+        return Rect.MinMaxRect(topLeft.x, topLeft.y, bottomRight.x, bottomRight.y);
+    }
+
+    Bounds GetViewportBounds(Vector3 screenPosition1, Vector3 screenPosition2)
+    {
+        var v1 = Camera.main.ScreenToViewportPoint(screenPosition1);
+        var v2 = Camera.main.ScreenToViewportPoint(screenPosition2);
+        var min = Vector3.Min(v1, v2);
+        var max = Vector3.Max(v1, v2);
+        min.z = Camera.main.nearClipPlane;
+        max.z = Camera.main.farClipPlane;
+
+        var bounds = new Bounds();
+        bounds.SetMinMax(min, max);
+        return bounds;
+    }
+
+    bool IsWithinSelectionBounds(GameObject gameObject)
+    {
+        if (!isSelecting)
+            return false;
+
+        var camera = Camera.main;
+        var viewportBounds = GetViewportBounds(mousePosition1, Input.mousePosition);
+
+        return viewportBounds.Contains(
+            camera.WorldToViewportPoint(gameObject.transform.position));
+    }
+
+    void OnGUI()
+    {
+        if (isSelecting)
+        {
+            // Create a rect from both mouse positions
+            var rect = GetScreenRect(mousePosition1, Input.mousePosition);
+            DrawScreenRect(rect, new Color(0.8f, 0.8f, 0.95f, 0.25f));
+            DrawScreenRectBorder(rect, 2, new Color(0.8f, 0.8f, 0.95f));
         }
     }
 }

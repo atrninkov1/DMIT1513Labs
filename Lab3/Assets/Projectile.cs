@@ -5,6 +5,7 @@ using UnityEngine;
 public class Projectile : MonoBehaviour {
 
     float createTime;
+    public GameObject sourceGameObject;
 
 	// Use this for initialization
 	void Start () {
@@ -23,7 +24,7 @@ public class Projectile : MonoBehaviour {
     {
         if (collision.gameObject.tag == "Enemy")
         {
-            collision.gameObject.GetComponent<EnemyHPScript>().TakeDamage(100);
+            collision.gameObject.GetComponent<EnemyHPScript>().TakeDamage(100, sourceGameObject);
         }
 
         Destroy(gameObject);
