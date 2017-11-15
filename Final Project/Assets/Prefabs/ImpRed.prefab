@@ -267,6 +267,7 @@ GameObject:
   - component: {fileID: 4295997048974280}
   - component: {fileID: 114464579818526570}
   - component: {fileID: 61802068538507486}
+  - component: {fileID: 50633930424199468}
   m_Layer: 0
   m_Name: ImpRed
   m_TagString: Untagged
@@ -437,8 +438,8 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1782879716286516}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -3.070802, y: -4.03, z: -1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0.7412665, y: -4.0035973, z: 9}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4224130489964908}
@@ -1167,6 +1168,26 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1078534425147866}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!50 &50633930424199468
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1782879716286516}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
 --- !u!61 &61802068538507486
 BoxCollider2D:
   m_ObjectHideFlags: 1
@@ -1176,7 +1197,7 @@ BoxCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: -0.25}
@@ -1440,6 +1461,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f94208d9eec712f438a72db7610e5e4d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  onSelectedCanvas: {fileID: 0}
+  cardCostType: 0
+  cost: 3
 --- !u!212 &212946959483489230
 SpriteRenderer:
   m_ObjectHideFlags: 1
