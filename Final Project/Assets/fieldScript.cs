@@ -15,5 +15,15 @@ public class fieldScript : MonoBehaviour {
     [SerializeField]
     fieldType cardCostType = fieldType.red;
 
+    List<Card> cards;
 
+    void Start()
+    {
+        cards = new List<Card>();
+    }
+
+    public void addCardToField(GameObject card)
+    {
+        cards.Add(card.GetComponent<Card>());
+    }
 }

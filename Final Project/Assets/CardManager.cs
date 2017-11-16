@@ -14,6 +14,7 @@ public class CardManager : MonoBehaviour {
     GameObject redField;
     [SerializeField]
     GameObject yellowField;
+    RaycastHit hit;
 
     int maxBlueMana = 5;
     int maxRedMana = 5;
@@ -75,29 +76,32 @@ public class CardManager : MonoBehaviour {
     {
         switch (hand.selectedCard.GetComponent<Card>().CardCostType)
         {
-            case Card.costType.red:
+            case Card.Types.red:
                 if (currentRedMana >= hand.selectedCard.GetComponent<Card>().Cost)
                 {
                     currentRedMana -= hand.selectedCard.GetComponent<Card>().Cost;
-                    hand.selectedCard.GetComponent<Card>().playCard(blueField.transform.position);
+                    hand.selectedCard.GetComponent<Card>().playCard(blueField.transform.position, "blue");
+                    blueField.GetComponent<fieldScript>().addCardToField(hand.selectedCard);
                     hand.selectedCard = null;
                     Panel.SetActive(false);
                 }
                 break;
-            case Card.costType.blue:
+            case Card.Types.blue:
                 if (currentBlueMana >= hand.selectedCard.GetComponent<Card>().Cost)
                 {
                     currentBlueMana -= hand.selectedCard.GetComponent<Card>().Cost;
-                    hand.selectedCard.GetComponent<Card>().playCard(blueField.transform.position);
+                    hand.selectedCard.GetComponent<Card>().playCard(blueField.transform.position, "blue");
+                    blueField.GetComponent<fieldScript>().addCardToField(hand.selectedCard);
                     hand.selectedCard = null;
                     Panel.SetActive(false);
                 }
                 break;
-            case Card.costType.yellow:
+            case Card.Types.yellow:
                 if (currentYellowMana >= hand.selectedCard.GetComponent<Card>().Cost)
                 {
                     currentYellowMana -= hand.selectedCard.GetComponent<Card>().Cost;
-                    hand.selectedCard.GetComponent<Card>().playCard(blueField.transform.position);
+                    hand.selectedCard.GetComponent<Card>().playCard(blueField.transform.position, "blue");
+                    blueField.GetComponent<fieldScript>().addCardToField(hand.selectedCard);
                     hand.selectedCard = null;
                     Panel.SetActive(false);
                 }
@@ -111,29 +115,32 @@ public class CardManager : MonoBehaviour {
     {
         switch (hand.selectedCard.GetComponent<Card>().CardCostType)
         {
-            case Card.costType.red:
+            case Card.Types.red:
                 if (currentRedMana >= hand.selectedCard.GetComponent<Card>().Cost)
                 {
                     currentRedMana -= hand.selectedCard.GetComponent<Card>().Cost;
-                    hand.selectedCard.GetComponent<Card>().playCard(redField.transform.position);
+                    hand.selectedCard.GetComponent<Card>().playCard(redField.transform.position, "red");
+                    redField.GetComponent<fieldScript>().addCardToField(hand.selectedCard);
                     hand.selectedCard = null;
                     Panel.SetActive(false);
                 }
                 break;
-            case Card.costType.blue:
+            case Card.Types.blue:
                 if (currentBlueMana >= hand.selectedCard.GetComponent<Card>().Cost)
                 {
                     currentBlueMana -= hand.selectedCard.GetComponent<Card>().Cost;
-                    hand.selectedCard.GetComponent<Card>().playCard(redField.transform.position);
+                    hand.selectedCard.GetComponent<Card>().playCard(redField.transform.position, "red");
+                    redField.GetComponent<fieldScript>().addCardToField(hand.selectedCard);
                     hand.selectedCard = null;
                     Panel.SetActive(false);
                 }
                 break;
-            case Card.costType.yellow:
+            case Card.Types.yellow:
                 if (currentYellowMana >= hand.selectedCard.GetComponent<Card>().Cost)
                 {
                     currentYellowMana -= hand.selectedCard.GetComponent<Card>().Cost;
-                    hand.selectedCard.GetComponent<Card>().playCard(redField.transform.position);
+                    hand.selectedCard.GetComponent<Card>().playCard(redField.transform.position, "red");
+                    redField.GetComponent<fieldScript>().addCardToField(hand.selectedCard);
                     hand.selectedCard = null;
                     Panel.SetActive(false);
                 }
@@ -148,35 +155,53 @@ public class CardManager : MonoBehaviour {
     {
         switch (hand.selectedCard.GetComponent<Card>().CardCostType)
         {
-            case Card.costType.red:
+            case Card.Types.red:
                 if (currentRedMana >= hand.selectedCard.GetComponent<Card>().Cost)
                 {
                     currentRedMana -= hand.selectedCard.GetComponent<Card>().Cost;
-                    hand.selectedCard.GetComponent<Card>().playCard(yellowField.transform.position);
+                    hand.selectedCard.GetComponent<Card>().playCard(yellowField.transform.position, "yellow");
+                    yellowField.GetComponent<fieldScript>().addCardToField(hand.selectedCard);
                     hand.selectedCard = null;
                     Panel.SetActive(false);
                 }
                 break;
-            case Card.costType.blue:
+            case Card.Types.blue:
                 if (currentBlueMana >= hand.selectedCard.GetComponent<Card>().Cost)
                 {
                     currentBlueMana -= hand.selectedCard.GetComponent<Card>().Cost;
-                    hand.selectedCard.GetComponent<Card>().playCard(yellowField.transform.position);
+                    hand.selectedCard.GetComponent<Card>().playCard(yellowField.transform.position, "yellow");
+                    yellowField.GetComponent<fieldScript>().addCardToField(hand.selectedCard);
                     hand.selectedCard = null;
                     Panel.SetActive(false);
                 }
                 break;
-            case Card.costType.yellow:
+            case Card.Types.yellow:
                 if (currentYellowMana >= hand.selectedCard.GetComponent<Card>().Cost)
                 {
                     currentYellowMana -= hand.selectedCard.GetComponent<Card>().Cost;
-                    hand.selectedCard.GetComponent<Card>().playCard(yellowField.transform.position);
+                    hand.selectedCard.GetComponent<Card>().playCard(yellowField.transform.position, "yellow");
+                    yellowField.GetComponent<fieldScript>().addCardToField(hand.selectedCard);
                     hand.selectedCard = null;
                     Panel.SetActive(false);
                 }
                 break;
             default:
                 break;
+        }
+    }
+    void Update()
+    {
+        if (Input.GetMouseButtonDown(0))
+        {
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            if (Physics.Raycast(transform.position, ray.direction, out hit, 1000))
+            {
+                print(hit.collider.gameObject.name);
+                if (hit.collider.gameObject.tag == "Enemy")
+                {
+                    hit.collider.gameObject.GetComponent<EnemyHPManager>().loseHP(hand.selectedCard.GetComponent<Card>().Attack);
+                }
+            }
         }
     }
 }
