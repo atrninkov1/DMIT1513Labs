@@ -270,7 +270,7 @@ GameObject:
   - component: {fileID: 50633930424199468}
   m_Layer: 0
   m_Name: ImpRed
-  m_TagString: Untagged
+  m_TagString: PlayerCreature
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1462,6 +1462,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   onSelectedCanvas: {fileID: 0}
+  attack: 2
+  maxHealth: 1
+  health: 0
+  magicPower: 3
   cardCostType: 0
   cost: 3
 --- !u!212 &212946959483489230

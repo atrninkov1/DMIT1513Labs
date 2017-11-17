@@ -191,17 +191,43 @@ public class CardManager : MonoBehaviour {
     }
     void Update()
     {
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0) && hand.selectedCard != null)
         {
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            if (Physics.Raycast(transform.position, ray.direction, out hit, 1000))
+            Ray ray;
+            switch (hand.selectedCard.GetComponent<Card>().cardTypes)
             {
-                print(hit.collider.gameObject.name);
-                if (hit.collider.gameObject.tag == "Enemy")
-                {
-                    hit.collider.gameObject.GetComponent<EnemyHPManager>().loseHP(hand.selectedCard.GetComponent<Card>().Attack);
-                }
-            }
+                case Card.Types.red:
+                    ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+                    if (Physics.Raycast(ray.origin, ray.direction, out hit, 1000))
+                    {
+                        if (hit.collider.gameObject.tag == "Enemy")
+                        {
+                            hit.collider.gameObject.GetComponent<EnemyHPManager>().loseHP(hand.selectedCard.GetComponent<Card>().Attack);
+                        }
+                    }
+                    break;
+                case Card.Types.blue:                    
+                    break;
+                case Card.Types.yellow:
+                    ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+                    if (Physics.Raycast(ray.origin, ray.direction, out hit, 1000))
+                    {
+                        print(hit.collider.gameObject.name);
+                        if (hit.collider.gameObject.tag == "PlayerCreature")
+                        {
+                            for (int i = 0; i < 2; i++)
+                            {
+                                if (hit.collider.gameObject.GetComponent<Card>().Health < hit.collider.gameObject.GetComponent<Card>().MaxHealth)
+                                {
+                                    hit.collider.gameObject.GetComponent<Card>().Heal(1);
+                                }
+                            }
+                        }
+                    }
+                    break;
+                default:
+                    break;
+            }      
         }
     }
 }

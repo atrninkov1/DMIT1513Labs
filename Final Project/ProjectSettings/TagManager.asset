@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Field
   - Enemy
+  - PlayerCreature
   layers:
   - Default
   - TransparentFX

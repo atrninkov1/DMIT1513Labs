@@ -23,6 +23,8 @@ public class Card : MonoBehaviour
     [SerializeField]
     int attack;
     [SerializeField]
+    int maxHealth;
+    [SerializeField]
     int health;
     [SerializeField]
     int magicPower;
@@ -32,6 +34,21 @@ public class Card : MonoBehaviour
         get
         {
             return attack;
+        }
+    }
+
+    public int MaxHealth
+    {
+        get
+        {
+            return maxHealth;
+        }
+    }
+    public int Health
+    {
+        get
+        {
+            return health;
         }
     }
 
@@ -52,6 +69,14 @@ public class Card : MonoBehaviour
 
     Types cardType;
 
+    public Types cardTypes
+    {
+        get
+        {
+            return cardType;
+        }
+    }
+
     public int Cost
     {
         get
@@ -63,14 +88,9 @@ public class Card : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-
+        health = maxHealth;
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
 
     void OnMouseOver()
     {
@@ -117,6 +137,7 @@ public class Card : MonoBehaviour
                     break;
                 case Types.yellow:
                     //utility effect
+                    transform.parent.GetComponent<HandScript>().selectedCard = gameObject;
                     break;
                 default:
                     break;
@@ -147,6 +168,14 @@ public class Card : MonoBehaviour
                 break;
             default:
                 break;
+        }
+    }
+
+    public void Heal(int amount)
+    {
+        if (health < maxHealth)
+        {
+            health+=amount;
         }
     }
 
