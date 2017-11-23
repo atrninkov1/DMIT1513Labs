@@ -7,6 +7,10 @@ TagManager:
   - Field
   - Enemy
   - PlayerCreature
+  - BlueDeck
+  - YellowDeck
+  - RedDeck
+  - EnemyCreature
   layers:
   - Default
   - TransparentFX

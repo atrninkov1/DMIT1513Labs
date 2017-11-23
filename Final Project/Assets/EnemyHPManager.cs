@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class EnemyHPManager : MonoBehaviour {
     int hp = 20;
@@ -15,5 +16,9 @@ public class EnemyHPManager : MonoBehaviour {
     public void loseHP(int amount)
     {
         hp -= amount;
+        if (hp<=0)
+        {
+            SceneManager.LoadScene("GameOver");
+        }
     }
 }

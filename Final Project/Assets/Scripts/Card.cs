@@ -7,6 +7,19 @@ public class Card : MonoBehaviour
 
     bool positionSet = false;
     bool positionSetOnShrink = false;
+    bool hasAttacked;
+
+    public bool HasAttacked
+    {
+        get
+        {
+            return hasAttacked;
+        }
+        set
+        {
+            hasAttacked = value;
+        }
+    }
 
 
     public GameObject onSelectedCanvas;
@@ -52,6 +65,14 @@ public class Card : MonoBehaviour
         }
     }
 
+    public int MagicPower
+    {
+        get
+        {
+            return magicPower;
+        }
+    }
+
     Vector3 previousPosition;
 
     [SerializeField]
@@ -66,7 +87,7 @@ public class Card : MonoBehaviour
             return cardCostType;
         }
     }
-
+    [SerializeField]
     Types cardType;
 
     public Types cardTypes
@@ -97,7 +118,7 @@ public class Card : MonoBehaviour
         transform.localScale = new Vector3(2, 2, 1);
         if (!positionSet)
         {
-            transform.position = new Vector3(transform.position.x, transform.position.y + 1f, -1);
+            transform.position = new Vector3(transform.position.x, transform.position.y + 1f, -7);
             positionSet = true;
             positionSetOnShrink = false;
         }
@@ -107,7 +128,7 @@ public class Card : MonoBehaviour
     {
         if (!positionSetOnShrink)
         {
-            transform.position = new Vector3(transform.position.x, transform.position.y - 1f, -1);
+            transform.position = new Vector3(transform.position.x, transform.position.y - 1f, -7);
             positionSet = false;
             positionSetOnShrink = true;
         }
@@ -116,9 +137,9 @@ public class Card : MonoBehaviour
 
     void OnMouseDown()
     {
-        if (!played)
+        if (!played && gameObject.tag == "PlayerCreature")
         {
-            previousPosition = new Vector3(transform.position.x, transform.position.y - 1f, transform.position.z); ;
+            previousPosition = new Vector3(transform.position.x, transform.position.y - 1f, transform.position.z);
             transform.position = new Vector3(Camera.main.ScreenToWorldPoint(new Vector3(Screen.width / 2, Screen.height / 2)).x,
                 Camera.main.ScreenToWorldPoint(new Vector3(Screen.width / 2, Screen.height / 2)).y + 1.75f, transform.position.z);
             onSelectedCanvas.SetActive(true);
@@ -126,22 +147,25 @@ public class Card : MonoBehaviour
         }
         else
         {
-            switch (cardType)
+            if (gameObject.tag == "PlayerCreature")
             {
-                case Types.red:
-                    //attack
-                    transform.parent.GetComponent<HandScript>().selectedCard = gameObject;
-                    break;
-                case Types.blue:
-                    //nothing
-                    break;
-                case Types.yellow:
-                    //utility effect
-                    transform.parent.GetComponent<HandScript>().selectedCard = gameObject;
-                    break;
-                default:
-                    break;
-            }
+                switch (cardType)
+                {
+                    case Types.red:
+                        //attack
+                        transform.parent.GetComponent<HandScript>().selectedCard = gameObject;
+                        break;
+                    case Types.blue:
+                        //nothing
+                        break;
+                    case Types.yellow:
+                        //utility effect
+                        transform.parent.GetComponent<HandScript>().selectedCard = gameObject;
+                        break;
+                    default:
+                        break;
+                }
+            }            
         }
     }
 
@@ -179,4 +203,22 @@ public class Card : MonoBehaviour
         }
     }
 
+    public void SetCanvas(GameObject canvas)
+    {
+        onSelectedCanvas = canvas;
+    }
+
+    public void TakeDamage(int amount)
+    {
+        health -= amount;
+        if (health <= 0)
+        {
+            Destroy(gameObject);
+        }
+    }
+
+    public void LoseMagic(int amount)
+    {
+        magicPower -= amount;
+    }
 }
