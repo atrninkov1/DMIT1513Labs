@@ -24,6 +24,8 @@ public class CardManager : MonoBehaviour
     [SerializeField]
     GameObject canvas;
     RaycastHit hit;
+    [SerializeField]
+    Texture texture;
 
     int maxBlueMana = 0;
     int maxRedMana = 0;
@@ -118,7 +120,6 @@ public class CardManager : MonoBehaviour
                     currentBlueMana -= hand.selectedCard.GetComponent<Card>().Cost;
                     hand.RemoveCard(hand.selectedCard);
                     hand.selectedCard.GetComponent<Card>().playCard(blueField.transform.position, "blue");
-                    print(hand.selectedCard.name);
                     blueField.GetComponent<fieldScript>().addCardToField(hand.selectedCard);
                     hand.selectedCard = null;
                     Panel.SetActive(false);
@@ -378,5 +379,20 @@ public class CardManager : MonoBehaviour
     public void EndTurn()
     {
         phase = phases.end;
+    }
+
+    private void OnGUI()
+    {
+        if (hand.selectedCard != null)
+        {
+            if (hand.selectedCard.GetComponent<Card>().cardTypes == Card.Types.red || hand.selectedCard.GetComponent<Card>().cardTypes == Card.Types.yellow)
+            {
+                Vector2 position = Camera.main.WorldToScreenPoint(new Vector2(hand.selectedCard.transform.position.x, hand.selectedCard.transform.position.y) * -1);
+                Vector2 size = new Vector2(3, Camera.main.WorldToScreenPoint(hand.selectedCard.transform.position).y - (Input.mousePosition.y));
+                GUIUtility.RotateAroundPivot(45,hand.selectedCard.transform.position);
+                print(hand.selectedCard);
+                GUI.DrawTexture(new Rect(position, size), texture);
+            }
+        }        
     }
 }

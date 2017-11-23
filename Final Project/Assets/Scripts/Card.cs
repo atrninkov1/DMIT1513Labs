@@ -178,6 +178,7 @@ public class Card : MonoBehaviour
     public void playCard(Vector3 fieldLocation, string type)
     {
         transform.position = new Vector3(fieldLocation.x, fieldLocation.y + 0.25f, fieldLocation.z);
+        GetComponent<AudioSource>().Play();
         played = true;
         switch (type)
         {
