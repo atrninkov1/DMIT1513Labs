@@ -22,12 +22,12 @@ public class fieldScript : MonoBehaviour {
             return cards;
         }
     }
-
+    [SerializeField]
     List<Card> cards;
 
     void Start()
     {
-        cards = new List<Card>();
+
     }
 
     public void addCardToField(GameObject card)

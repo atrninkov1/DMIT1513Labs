@@ -16,6 +16,12 @@ public class CardManager : MonoBehaviour
     [SerializeField]
     GameObject yellowField;
     [SerializeField]
+    GameObject enemyBlueField;
+    [SerializeField]
+    GameObject enemyRedField;
+    [SerializeField]
+    GameObject enemyYellowField;
+    [SerializeField]
     GameObject blueDeck;
     [SerializeField]
     GameObject redDeck;
@@ -25,7 +31,9 @@ public class CardManager : MonoBehaviour
     GameObject canvas;
     RaycastHit hit;
     [SerializeField]
-    Texture texture;
+    GameObject lineRenderer;
+    [SerializeField]
+    GameObject player;
 
     int maxBlueMana = 0;
     int maxRedMana = 0;
@@ -302,9 +310,14 @@ public class CardManager : MonoBehaviour
                                 }
                                 else if (hit.collider.gameObject.tag == "EnemyCreature" && !hand.selectedCard.GetComponent<Card>().HasAttacked)
                                 {
-                                    hit.collider.gameObject.GetComponent<Card>().TakeDamage(hand.selectedCard.GetComponent<Card>().Attack);
-                                    hand.selectedCard.GetComponent<Card>().HasAttacked = true;
-                                    hand.selectedCard = null;
+                                    if ((hit.collider.GetComponent<Card>().cardTypes == Card.Types.red && enemyBlueField.GetComponent<fieldScript>().creaturesInField.Count == 0) ||
+                                           (hit.collider.GetComponent<Card>().cardTypes == Card.Types.yellow && enemyBlueField.GetComponent<fieldScript>().creaturesInField.Count == 0
+                                           && enemyRedField.GetComponent<fieldScript>().creaturesInField.Count == 0) || hit.collider.GetComponent<Card>().cardTypes == Card.Types.blue)
+                                    {
+                                        hit.collider.gameObject.GetComponent<Card>().TakeDamage(hand.selectedCard.GetComponent<Card>().Attack);
+                                        hand.selectedCard.GetComponent<Card>().HasAttacked = true;
+                                        hand.selectedCard = null;
+                                    }
                                 }
                             }
                             break;
@@ -362,6 +375,10 @@ public class CardManager : MonoBehaviour
                             yellowField.GetComponent<fieldScript>().creaturesInField[Random.Range(0, yellowField.GetComponent<fieldScript>().creaturesInField.Count)].
                                 GetComponent<Card>().TakeDamage(enemy.GetComponent<Card>().Attack);
                         }
+                        else
+                        {
+                            player.GetComponent<EnemyHPManager>().loseHP(enemy.GetComponent<Card>().Attack);
+                        }
                     }
                 }
                 GameObject[] playerCards = GameObject.FindGameObjectsWithTag("PlayerCreature");
@@ -374,25 +391,23 @@ public class CardManager : MonoBehaviour
             default:
                 break;
         }
+        if (hand.selectedCard != null)
+        {
+            if (hand.selectedCard.GetComponent<Card>().cardTypes == Card.Types.red || hand.selectedCard.GetComponent<Card>().cardTypes == Card.Types.yellow)
+            {
+                lineRenderer.SetActive(true);
+                lineRenderer.GetComponent<LineRenderer>().SetPosition(0, hand.selectedCard.transform.position);
+                lineRenderer.GetComponent<LineRenderer>().SetPosition(1, Camera.main.ScreenToWorldPoint(Input.mousePosition));
+            }
+        }
+        else
+        {
+            lineRenderer.SetActive(false);
+        }
     }
 
     public void EndTurn()
     {
         phase = phases.end;
-    }
-
-    private void OnGUI()
-    {
-        if (hand.selectedCard != null)
-        {
-            if (hand.selectedCard.GetComponent<Card>().cardTypes == Card.Types.red || hand.selectedCard.GetComponent<Card>().cardTypes == Card.Types.yellow)
-            {
-                Vector2 position = Camera.main.WorldToScreenPoint(new Vector2(hand.selectedCard.transform.position.x, hand.selectedCard.transform.position.y) * -1);
-                Vector2 size = new Vector2(3, Camera.main.WorldToScreenPoint(hand.selectedCard.transform.position).y - (Input.mousePosition.y));
-                GUIUtility.RotateAroundPivot(45,hand.selectedCard.transform.position);
-                print(hand.selectedCard);
-                GUI.DrawTexture(new Rect(position, size), texture);
-            }
-        }        
     }
 }

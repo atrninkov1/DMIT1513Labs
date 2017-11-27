@@ -217,6 +217,7 @@ GameObject:
   - component: {fileID: 54454404107104066}
   - component: {fileID: 65708560660752808}
   - component: {fileID: 82116363905194462}
+  - component: {fileID: 122090034000569170}
   m_Layer: 0
   m_Name: PlayerImpRed
   m_TagString: PlayerCreature
@@ -1295,6 +1296,17 @@ MonoBehaviour:
   cardCostType: 0
   cost: 2
   cardType: 0
+--- !u!122 &122090034000569170
+Halo:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1782879716286516}
+  m_Enabled: 0
+  m_Color:
+    serializedVersion: 2
+    rgba: 4278190335
+  m_Size: 2
 --- !u!212 &212946959483489230
 SpriteRenderer:
   m_ObjectHideFlags: 1

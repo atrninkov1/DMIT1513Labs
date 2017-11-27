@@ -181,6 +181,7 @@ GameObject:
   - component: {fileID: 114687498491064084}
   - component: {fileID: 54059964235087136}
   - component: {fileID: 65366301144630304}
+  - component: {fileID: 122399720895854786}
   m_Layer: 0
   m_Name: EnemyDemonRed
   m_TagString: EnemyCreature
@@ -1212,6 +1213,18 @@ MonoBehaviour:
   magicPower: 3
   cardCostType: 0
   cost: 4
+  cardType: 0
+--- !u!122 &122399720895854786
+Halo:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1798136517705864}
+  m_Enabled: 0
+  m_Color:
+    serializedVersion: 2
+    rgba: 4278190335
+  m_Size: 2
 --- !u!212 &212519315520405108
 SpriteRenderer:
   m_ObjectHideFlags: 1

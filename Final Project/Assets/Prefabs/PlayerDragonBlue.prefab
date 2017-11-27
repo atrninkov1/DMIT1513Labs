@@ -164,6 +164,7 @@ GameObject:
   - component: {fileID: 54423833856077528}
   - component: {fileID: 65285912257373800}
   - component: {fileID: 82988642861206744}
+  - component: {fileID: 122594504085203962}
   m_Layer: 0
   m_Name: PlayerDragonBlue
   m_TagString: PlayerCreature
@@ -1295,6 +1296,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9a250c24c12937e469ef1165a6294493, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!122 &122594504085203962
+Halo:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1729362501608192}
+  m_Enabled: 0
+  m_Color:
+    serializedVersion: 2
+    rgba: 4278190335
+  m_Size: 2
 --- !u!212 &212885071807256982
 SpriteRenderer:
   m_ObjectHideFlags: 1

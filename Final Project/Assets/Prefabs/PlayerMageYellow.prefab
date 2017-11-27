@@ -59,6 +59,7 @@ GameObject:
   - component: {fileID: 54110537120653610}
   - component: {fileID: 65738906996420598}
   - component: {fileID: 82000078312925214}
+  - component: {fileID: 122024008705237362}
   m_Layer: 0
   m_Name: PlayerMageYellow
   m_TagString: PlayerCreature
@@ -1557,6 +1558,17 @@ MonoBehaviour:
   cardCostType: 2
   cost: 3
   cardType: 0
+--- !u!122 &122024008705237362
+Halo:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1075389459941956}
+  m_Enabled: 0
+  m_Color:
+    serializedVersion: 2
+    rgba: 4278190335
+  m_Size: 2
 --- !u!212 &212056127704093944
 SpriteRenderer:
   m_ObjectHideFlags: 1

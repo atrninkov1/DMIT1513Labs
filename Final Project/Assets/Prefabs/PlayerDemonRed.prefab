@@ -182,6 +182,7 @@ GameObject:
   - component: {fileID: 54059964235087136}
   - component: {fileID: 65366301144630304}
   - component: {fileID: 82270167596939754}
+  - component: {fileID: 122757598254262544}
   m_Layer: 0
   m_Name: PlayerDemonRed
   m_TagString: PlayerCreature
@@ -1295,6 +1296,17 @@ MonoBehaviour:
   cardCostType: 0
   cost: 4
   cardType: 0
+--- !u!122 &122757598254262544
+Halo:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1798136517705864}
+  m_Enabled: 0
+  m_Color:
+    serializedVersion: 2
+    rgba: 4278190335
+  m_Size: 2
 --- !u!212 &212519315520405108
 SpriteRenderer:
   m_ObjectHideFlags: 1

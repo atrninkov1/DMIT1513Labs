@@ -9,6 +9,8 @@ public class Card : MonoBehaviour
     bool positionSetOnShrink = false;
     bool hasAttacked;
 
+    float damageTaken;
+
     public bool HasAttacked
     {
         get
@@ -212,6 +214,8 @@ public class Card : MonoBehaviour
     public void TakeDamage(int amount)
     {
         health -= amount;
+        ((Behaviour)GetComponent("Halo")).enabled = true;
+        damageTaken = Time.time;
         if (health <= 0)
         {
             Destroy(gameObject);
@@ -221,5 +225,12 @@ public class Card : MonoBehaviour
     public void LoseMagic(int amount)
     {
         magicPower -= amount;
+    }
+    private void Update()
+    {
+        if (((Behaviour)GetComponent("Halo")).enabled && Time.time > damageTaken + 2)
+        {
+            ((Behaviour)GetComponent("Halo")).enabled = false;
+        }
     }
 }
