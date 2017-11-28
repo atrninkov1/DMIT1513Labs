@@ -34,6 +34,8 @@ public class CardManager : MonoBehaviour
     GameObject lineRenderer;
     [SerializeField]
     GameObject player;
+    [SerializeField]
+    GameObject mainMenu;
 
     int maxBlueMana = 0;
     int maxRedMana = 0;
@@ -235,6 +237,10 @@ public class CardManager : MonoBehaviour
     }
     void Update()
     {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            mainMenu.SetActive(true);
+        }
         Ray ray;
         switch (phase)
         {
