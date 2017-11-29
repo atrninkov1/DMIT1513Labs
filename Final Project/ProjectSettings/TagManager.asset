@@ -11,6 +11,8 @@ TagManager:
   - YellowDeck
   - RedDeck
   - EnemyCreature
+  - PlayerHand
+  - EnemyHand
   layers:
   - Default
   - TransparentFX

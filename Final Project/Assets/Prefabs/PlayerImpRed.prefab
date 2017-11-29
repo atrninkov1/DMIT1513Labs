@@ -1288,6 +1288,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f94208d9eec712f438a72db7610e5e4d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  hideTexture: {fileID: 1695450764831856}
   onSelectedCanvas: {fileID: 0}
   attack: 2
   maxHealth: 1

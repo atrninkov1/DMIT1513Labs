@@ -8,6 +8,8 @@ public class CardManager : MonoBehaviour
     [SerializeField]
     HandScript hand;
     [SerializeField]
+    HandScript enemyHand;
+    [SerializeField]
     GameObject Panel;
     [SerializeField]
     GameObject blueField;
@@ -28,6 +30,12 @@ public class CardManager : MonoBehaviour
     [SerializeField]
     GameObject yellowDeck;
     [SerializeField]
+    GameObject enemyBlueDeck;
+    [SerializeField]
+    GameObject enemyRedDeck;
+    [SerializeField]
+    GameObject enemyYellowDeck;
+    [SerializeField]
     GameObject canvas;
     RaycastHit hit;
     [SerializeField]
@@ -43,8 +51,15 @@ public class CardManager : MonoBehaviour
     int currentBlueMana = 0;
     int currentRedMana = 0;
     int currentYellowMana = 0;
+    int enemyMaxBlueMana = 0;
+    int enemyMaxRedMana = 0;
+    int enemyMaxYellowMana = 0;
+    int enemyCurrentBlueMana = 0;
+    int enemyCurrentRedMana = 0;
+    int enemyCurrentYellowMana = 0;
     int numberOfCardsToDraw;
-
+    int enemyNumberOfCardsToDraw;
+    int playerTurn;
     enum phases
     {
         draw,
@@ -53,6 +68,13 @@ public class CardManager : MonoBehaviour
     }
 
     phases phase = phases.draw;
+
+    enum cardToDraw
+    {
+        red,
+        blue,
+        yellow
+    }
 
     public int MaxBlueMana
     {
@@ -101,6 +123,8 @@ public class CardManager : MonoBehaviour
     {
         phase = phases.draw;
         numberOfCardsToDraw = 5;
+        enemyNumberOfCardsToDraw = 5;
+        playerTurn = 1;
     }
 
     public void Cancel()
@@ -242,161 +266,229 @@ public class CardManager : MonoBehaviour
             mainMenu.SetActive(true);
         }
         Ray ray;
-        switch (phase)
+        if (playerTurn == 1)
         {
-            case phases.draw:
-                blueDeck.transform.position = new Vector3(Camera.main.ScreenToWorldPoint(new Vector3(Screen.width / 2, Screen.height / 2)).x - 1.2f,
-                    Camera.main.ScreenToWorldPoint(new Vector3(Screen.width / 2, Screen.height / 2)).y, blueDeck.transform.position.z);
-                redDeck.transform.position = new Vector3(Camera.main.ScreenToWorldPoint(new Vector3(Screen.width / 2, Screen.height / 2)).x,
-                    Camera.main.ScreenToWorldPoint(new Vector3(Screen.width / 2, Screen.height / 2)).y, redDeck.transform.position.z);
-                yellowDeck.transform.position = new Vector3(Camera.main.ScreenToWorldPoint(new Vector3(Screen.width / 2, Screen.height / 2)).x + 1.2f,
-                    Camera.main.ScreenToWorldPoint(new Vector3(Screen.width / 2, Screen.height / 2)).y, yellowDeck.transform.position.z);
-                if (Input.GetMouseButtonDown(0))
-                {
-                    ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-                    if (Physics.Raycast(ray.origin, ray.direction, out hit, 1000))
+            switch (phase)
+            {
+                case phases.draw:
+                    #region Draw
+                    blueDeck.transform.position = new Vector3(Camera.main.ScreenToWorldPoint(new Vector3(Screen.width / 2, Screen.height / 2)).x - 1.2f,
+                        Camera.main.ScreenToWorldPoint(new Vector3(Screen.width / 2, Screen.height / 2)).y, blueDeck.transform.position.z);
+                    redDeck.transform.position = new Vector3(Camera.main.ScreenToWorldPoint(new Vector3(Screen.width / 2, Screen.height / 2)).x,
+                        Camera.main.ScreenToWorldPoint(new Vector3(Screen.width / 2, Screen.height / 2)).y, redDeck.transform.position.z);
+                    yellowDeck.transform.position = new Vector3(Camera.main.ScreenToWorldPoint(new Vector3(Screen.width / 2, Screen.height / 2)).x + 1.2f,
+                        Camera.main.ScreenToWorldPoint(new Vector3(Screen.width / 2, Screen.height / 2)).y, yellowDeck.transform.position.z);
+                    if (Input.GetMouseButtonDown(0))
                     {
-                        GameObject card;
-                        switch (hit.collider.gameObject.tag)
+                        ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+                        if (Physics.Raycast(ray.origin, ray.direction, out hit, 1000))
                         {
-                            case "BlueDeck":
-                                card = Instantiate(blueDeck.GetComponent<Deck>().Draw());
-                                card.transform.parent = hand.gameObject.transform;
-                                hand.AddCard(card);
-                                card.GetComponent<Card>().SetCanvas(canvas);
-                                maxBlueMana++;
-                                currentBlueMana++;
-                                numberOfCardsToDraw--;
+                            GameObject card;
+                            switch (hit.collider.gameObject.tag)
+                            {
+                                case "BlueDeck":
+                                    card = Instantiate(blueDeck.GetComponent<Deck>().Draw());
+                                    card.transform.parent = hand.gameObject.transform;
+                                    hand.AddCard(card);
+                                    card.GetComponent<Card>().SetCanvas(canvas);
+                                    maxBlueMana++;
+                                    currentBlueMana++;
+                                    numberOfCardsToDraw--;
+                                    break;
+                                case "YellowDeck":
+                                    card = Instantiate(yellowDeck.GetComponent<Deck>().Draw());
+                                    card.transform.parent = hand.gameObject.transform;
+                                    hand.AddCard(card);
+                                    card.GetComponent<Card>().SetCanvas(canvas);
+                                    maxYellowMana++;
+                                    currentYellowMana++;
+                                    numberOfCardsToDraw--;
+                                    break;
+                                case "RedDeck":
+                                    card = Instantiate(redDeck.GetComponent<Deck>().Draw());
+                                    card.transform.parent = hand.gameObject.transform;
+                                    hand.AddCard(card);
+                                    card.GetComponent<Card>().SetCanvas(canvas);
+                                    maxRedMana++;
+                                    currentRedMana++;
+                                    numberOfCardsToDraw--;
+                                    break;
+                                default:
+                                    break;
+                            }
+                        }
+                    }
+                    if (numberOfCardsToDraw <= 0)
+                    {
+                        blueDeck.GetComponent<Deck>().returnToPreviousPosition();
+                        redDeck.GetComponent<Deck>().returnToPreviousPosition();
+                        yellowDeck.GetComponent<Deck>().returnToPreviousPosition();
+                        phase = phases.play;
+                    }
+                    break;
+                #endregion
+                case phases.play:
+                    #region play
+                    if (Input.GetMouseButtonDown(0) && hand.selectedCard != null)
+                    {
+                        switch (hand.selectedCard.GetComponent<Card>().cardTypes)
+                        {
+                            case Card.Types.red:
+                                ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+                                if (Physics.Raycast(ray.origin, ray.direction, out hit, 1000))
+                                {
+                                    if (hit.collider.gameObject.tag == "Enemy" && !hand.selectedCard.GetComponent<Card>().HasAttacked)
+                                    {
+                                        hit.collider.gameObject.GetComponent<EnemyHPManager>().loseHP(hand.selectedCard.GetComponent<Card>().Attack);
+                                        hand.selectedCard.GetComponent<Card>().HasAttacked = true;
+                                        hand.selectedCard = null;
+                                    }
+                                    else if (hit.collider.gameObject.tag == "EnemyCreature" && !hand.selectedCard.GetComponent<Card>().HasAttacked)
+                                    {
+                                        if ((hit.collider.GetComponent<Card>().cardTypes == Card.Types.red && enemyBlueField.GetComponent<fieldScript>().creaturesInField.Count == 0) ||
+                                               (hit.collider.GetComponent<Card>().cardTypes == Card.Types.yellow && enemyBlueField.GetComponent<fieldScript>().creaturesInField.Count == 0
+                                               && enemyRedField.GetComponent<fieldScript>().creaturesInField.Count == 0) || hit.collider.GetComponent<Card>().cardTypes == Card.Types.blue)
+                                        {
+                                            hit.collider.gameObject.GetComponent<Card>().TakeDamage(hand.selectedCard.GetComponent<Card>().Attack);
+                                            hand.selectedCard.GetComponent<Card>().HasAttacked = true;
+                                            hand.selectedCard = null;
+                                        }
+                                    }
+                                }
                                 break;
-                            case "YellowDeck":
-                                card = Instantiate(yellowDeck.GetComponent<Deck>().Draw());
-                                card.transform.parent = hand.gameObject.transform;
-                                hand.AddCard(card);
-                                card.GetComponent<Card>().SetCanvas(canvas);
-                                maxYellowMana++;
-                                currentYellowMana++;
-                                numberOfCardsToDraw--;
+                            case Card.Types.blue:
                                 break;
-                            case "RedDeck":
-                                card = Instantiate(redDeck.GetComponent<Deck>().Draw());
-                                card.transform.parent = hand.gameObject.transform;
-                                hand.AddCard(card);
-                                card.GetComponent<Card>().SetCanvas(canvas);
-                                maxRedMana++;
-                                currentRedMana++;
-                                numberOfCardsToDraw--;
+                            case Card.Types.yellow:
+                                ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+                                if (Physics.Raycast(ray.origin, ray.direction, out hit, 1000))
+                                {
+                                    print(hit.collider.gameObject.tag);
+                                    if (hit.collider.gameObject.tag == "PlayerCreature" && hit.collider.gameObject != hand.selectedCard)
+                                    {
+                                        if (hand.selectedCard.GetComponent<Card>().MagicPower >= 2)
+                                        {
+                                            for (int i = 0; i < 2; i++)
+                                            {
+                                                if (hit.collider.gameObject.GetComponent<Card>().Health < hit.collider.gameObject.GetComponent<Card>().MaxHealth)
+                                                {
+                                                    hit.collider.gameObject.GetComponent<Card>().Heal(1);
+                                                }
+                                            }
+                                            hand.selectedCard.GetComponent<Card>().LoseMagic(2);
+                                            hand.selectedCard = null;
+                                        }
+                                    }
+                                }
                                 break;
                             default:
                                 break;
                         }
                     }
-                }
-                if (numberOfCardsToDraw <= 0)
-                {
-                    blueDeck.GetComponent<Deck>().returnToPreviousPosition();
-                    redDeck.GetComponent<Deck>().returnToPreviousPosition();
-                    yellowDeck.GetComponent<Deck>().returnToPreviousPosition();
-                    phase = phases.play;
-                }
-                break;
-            case phases.play:
-                if (Input.GetMouseButtonDown(0) && hand.selectedCard != null)
-                {
-                    switch (hand.selectedCard.GetComponent<Card>().cardTypes)
+                    break;
+                #endregion
+                case phases.end:
+                    #region endTurn
+                    numberOfCardsToDraw = 1;
+                    currentBlueMana = maxBlueMana;
+                    currentRedMana = maxRedMana;
+                    currentYellowMana = maxYellowMana;
+                    GameObject[] playerCards = GameObject.FindGameObjectsWithTag("PlayerCreature");
+                    foreach (var creature in playerCards)
                     {
-                        case Card.Types.red:
-                            ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-                            if (Physics.Raycast(ray.origin, ray.direction, out hit, 1000))
-                            {
-                                if (hit.collider.gameObject.tag == "Enemy" && !hand.selectedCard.GetComponent<Card>().HasAttacked)
-                                {
-                                    hit.collider.gameObject.GetComponent<EnemyHPManager>().loseHP(hand.selectedCard.GetComponent<Card>().Attack);
-                                    hand.selectedCard.GetComponent<Card>().HasAttacked = true;
-                                    hand.selectedCard = null;
-                                }
-                                else if (hit.collider.gameObject.tag == "EnemyCreature" && !hand.selectedCard.GetComponent<Card>().HasAttacked)
-                                {
-                                    if ((hit.collider.GetComponent<Card>().cardTypes == Card.Types.red && enemyBlueField.GetComponent<fieldScript>().creaturesInField.Count == 0) ||
-                                           (hit.collider.GetComponent<Card>().cardTypes == Card.Types.yellow && enemyBlueField.GetComponent<fieldScript>().creaturesInField.Count == 0
-                                           && enemyRedField.GetComponent<fieldScript>().creaturesInField.Count == 0) || hit.collider.GetComponent<Card>().cardTypes == Card.Types.blue)
-                                    {
-                                        hit.collider.gameObject.GetComponent<Card>().TakeDamage(hand.selectedCard.GetComponent<Card>().Attack);
-                                        hand.selectedCard.GetComponent<Card>().HasAttacked = true;
-                                        hand.selectedCard = null;
-                                    }
-                                }
-                            }
-                            break;
-                        case Card.Types.blue:
-                            break;
-                        case Card.Types.yellow:
-                            ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-                            if (Physics.Raycast(ray.origin, ray.direction, out hit, 1000))
-                            {
-                                print(hit.collider.gameObject.tag);
-                                if (hit.collider.gameObject.tag == "PlayerCreature" && hit.collider.gameObject != hand.selectedCard)
-                                {
-                                    if (hand.selectedCard.GetComponent<Card>().MagicPower >= 2)
-                                    {
-                                        for (int i = 0; i < 2; i++)
-                                        {
-                                            if (hit.collider.gameObject.GetComponent<Card>().Health < hit.collider.gameObject.GetComponent<Card>().MaxHealth)
-                                            {
-                                                hit.collider.gameObject.GetComponent<Card>().Heal(1);
-                                            }
-                                        }
-                                        hand.selectedCard.GetComponent<Card>().LoseMagic(2);
-                                        hand.selectedCard = null;
-                                    }
-                                }
-                            }
-                            break;
-                        default:
-                            break;
+                        creature.GetComponent<Card>().HasAttacked = false;
                     }
-                }
-                break;
-            case phases.end:
-                numberOfCardsToDraw = 1;
-                currentBlueMana = maxBlueMana;
-                currentRedMana = maxRedMana;
-                currentYellowMana = maxYellowMana;
-                GameObject[] enemyRedCards = GameObject.FindGameObjectsWithTag("EnemyCreature");
-                foreach (var enemy in enemyRedCards)
-                {
-                    if (enemy.GetComponent<Card>().cardTypes == Card.Types.red)
-                    {
-                        if (blueField.GetComponent<fieldScript>().creaturesInField.Count > 0)
-                        {
-                            blueField.GetComponent<fieldScript>().creaturesInField[Random.Range(0, blueField.GetComponent<fieldScript>().creaturesInField.Count)].
-                                GetComponent<Card>().TakeDamage(enemy.GetComponent<Card>().Attack);
-                        }
-                        else if (redField.GetComponent<fieldScript>().creaturesInField.Count > 0)
-                        {
-                            redField.GetComponent<fieldScript>().creaturesInField[Random.Range(0, redField.GetComponent<fieldScript>().creaturesInField.Count)].
-                                GetComponent<Card>().TakeDamage(enemy.GetComponent<Card>().Attack);
-                        }
-                        else if (yellowField.GetComponent<fieldScript>().creaturesInField.Count > 0)
-                        {
-                            yellowField.GetComponent<fieldScript>().creaturesInField[Random.Range(0, yellowField.GetComponent<fieldScript>().creaturesInField.Count)].
-                                GetComponent<Card>().TakeDamage(enemy.GetComponent<Card>().Attack);
-                        }
-                        else
-                        {
-                            player.GetComponent<EnemyHPManager>().loseHP(enemy.GetComponent<Card>().Attack);
-                        }
-                    }
-                }
-                GameObject[] playerCards = GameObject.FindGameObjectsWithTag("PlayerCreature");
-                foreach (var creature in playerCards)
-                {
-                    creature.GetComponent<Card>().HasAttacked = false;
-                }
-                phase = phases.draw;
-                break;
-            default:
-                break;
+                    playerTurn = 2;
+                    phase = phases.draw;
+                    break;
+                #endregion
+                default:
+                    break;
+            }
         }
+        else
+        {
+            switch (phase)
+            {
+                case phases.draw:
+                    GameObject card;
+                    card = enemyBlueDeck.GetComponent<Deck>().Draw();
+                    if (card == null)
+                    {
+                        card = enemyRedDeck.GetComponent<Deck>().Draw();
+                    }
+                    if (card == null)
+                    {
+                        card = enemyYellowDeck.GetComponent<Deck>().Draw();
+                    }
+                    card = Instantiate(card);
+                    card.transform.parent = enemyHand.gameObject.transform;
+                    enemyHand.AddCard(card);
+                    card.GetComponent<Card>().SetCanvas(canvas);
+                    card.GetComponent<Card>().setHidden(true);
+                    enemyMaxBlueMana++;
+                    enemyCurrentBlueMana++;
+                    enemyNumberOfCardsToDraw--;
+                    if (enemyNumberOfCardsToDraw <= 0)
+                    {
+                        phase = phases.play;
+                    }
+                    break;
+                case phases.play:
+                    for (int i = 0; i < enemyHand.Cards.Count; i++)
+                    {
+                        if (enemyHand.Cards[i].GetComponent<Card>().Cost <= currentBlueMana)
+                        {
+                            enemyCurrentBlueMana -= enemyHand.Cards[i].GetComponent<Card>().Cost;
+                            enemyHand.Cards[i].GetComponent<Card>().playCard(enemyBlueField.transform.position, "blue");
+                            enemyBlueField.GetComponent<fieldScript>().addCardToField(enemyHand.Cards[i]);
+                            enemyHand.Cards[i].GetComponent<Card>().setHidden(false);
+                            enemyHand.RemoveCard(enemyHand.Cards[i]);
+                            //i--;
+                        }
+                    }
+                    GameObject[] enemyRedCards = GameObject.FindGameObjectsWithTag("EnemyCreature");
+                    foreach (var enemy in enemyRedCards)
+                    {
+                        if (enemy.GetComponent<Card>().cardTypes == Card.Types.red && enemy.GetComponent<Card>().Played)
+                        {
+                            if (blueField.GetComponent<fieldScript>().creaturesInField.Count > 0)
+                            {
+                                blueField.GetComponent<fieldScript>().creaturesInField[Random.Range(0, blueField.GetComponent<fieldScript>().creaturesInField.Count)].
+                                    GetComponent<Card>().TakeDamage(enemy.GetComponent<Card>().Attack);
+                            }
+                            else if (redField.GetComponent<fieldScript>().creaturesInField.Count > 0)
+                            {
+                                redField.GetComponent<fieldScript>().creaturesInField[Random.Range(0, redField.GetComponent<fieldScript>().creaturesInField.Count)].
+                                    GetComponent<Card>().TakeDamage(enemy.GetComponent<Card>().Attack);
+                            }
+                            else if (yellowField.GetComponent<fieldScript>().creaturesInField.Count > 0)
+                            {
+                                yellowField.GetComponent<fieldScript>().creaturesInField[Random.Range(0, yellowField.GetComponent<fieldScript>().creaturesInField.Count)].
+                                    GetComponent<Card>().TakeDamage(enemy.GetComponent<Card>().Attack);
+                            }
+                            else
+                            {
+                                player.GetComponent<EnemyHPManager>().loseHP(enemy.GetComponent<Card>().Attack);
+                            }
+                        }
+                    }
+                    phase = phases.end;
+                    break;
+                case phases.end:
+                    #region endTurn
+                    enemyNumberOfCardsToDraw = 1;
+                    enemyCurrentBlueMana = enemyMaxBlueMana;
+                    enemyCurrentRedMana = enemyMaxRedMana;
+                    enemyCurrentYellowMana = enemyMaxYellowMana;
+                    playerTurn = 1;
+                    phase = phases.draw;
+                    break;
+                    #endregion
+                default:
+                    break;
+            }
+        }
+
         if (hand.selectedCard != null)
         {
             if (hand.selectedCard.GetComponent<Card>().cardTypes == Card.Types.red || hand.selectedCard.GetComponent<Card>().cardTypes == Card.Types.yellow)

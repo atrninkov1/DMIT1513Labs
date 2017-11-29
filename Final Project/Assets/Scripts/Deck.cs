@@ -23,8 +23,16 @@ public class Deck : MonoBehaviour
 
     public GameObject Draw()
     {
-        GameObject card = Cards[Cards.Count - 1];
-        Cards.Remove(card);
+        GameObject card;
+        if (Cards.Count > 0)
+        {
+            card = Cards[Cards.Count - 1];
+            Cards.Remove(card);
+        }
+        else
+        {
+            card = null;
+        }
         return card;
     }
 

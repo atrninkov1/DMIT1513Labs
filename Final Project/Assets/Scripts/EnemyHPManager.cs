@@ -18,7 +18,14 @@ public class EnemyHPManager : MonoBehaviour {
         hp -= amount;
         if (hp<=0)
         {
-            SceneManager.LoadScene("GameOver");
+            if (tag == "Enemy")
+            {
+                SceneManager.LoadScene("PlayerWon");
+            }
+            else if (tag == "Player")
+            {
+                SceneManager.LoadScene("PlayerLost");
+            }
         }
     }
 }

@@ -7,6 +7,14 @@ public class HandScript : MonoBehaviour {
     List<GameObject> cards;
     public GameObject selectedCard;
 
+    public List<GameObject> Cards
+    {
+        get
+        {
+            return cards;
+        }
+    }
+
     void Start()
     {
         cards = new List<GameObject>();
@@ -18,7 +26,7 @@ public class HandScript : MonoBehaviour {
         {
             if (cards[i] == null)
             {
-                cards.Remove(cards[i]);
+            //    cards.Remove(cards[i]);
             }
             else
             {

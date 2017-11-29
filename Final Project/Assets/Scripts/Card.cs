@@ -8,6 +8,7 @@ public class Card : MonoBehaviour
     bool positionSet = false;
     bool positionSetOnShrink = false;
     bool hasAttacked;
+    bool hidden = false;
 
     float damageTaken;
 
@@ -23,6 +24,8 @@ public class Card : MonoBehaviour
         }
     }
 
+    [SerializeField]
+    GameObject hideTexture;
 
     public GameObject onSelectedCanvas;
 
@@ -33,6 +36,8 @@ public class Card : MonoBehaviour
         blue,
         yellow
     }
+
+    [SerializeField]
     bool played = false;
 
     [SerializeField]
@@ -105,6 +110,13 @@ public class Card : MonoBehaviour
         get
         {
             return cost;
+        }
+    }
+    public bool Played
+    {
+        get
+        {
+            return played;
         }
     }
 
@@ -232,5 +244,29 @@ public class Card : MonoBehaviour
         {
             ((Behaviour)GetComponent("Halo")).enabled = false;
         }
+        if (hidden)
+        {
+            for (int i = 0; i < transform.childCount; i++)
+            {
+                var child = transform.GetChild(i).gameObject;
+                if (child != null && child != hideTexture)
+                    child.SetActive(false);
+            }
+        }
+        else
+        {
+
+            for (int i = 0; i < transform.childCount; i++)
+            {
+                var child = transform.GetChild(i).gameObject;
+                if (child != null && child != hideTexture)
+                    child.SetActive(true);
+            }
+        }
+    }
+
+    public void setHidden(bool hidden)
+    {
+        this.hidden = hidden;
     }
 }
