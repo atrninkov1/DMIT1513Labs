@@ -24,8 +24,29 @@ public class Card : MonoBehaviour
         }
     }
 
+    public enum effectType
+    {
+        heal,
+        buff,
+        giveArmor,
+        damage,
+        draw
+    }
+    public enum effectTargetType
+    {
+        field,
+        creature,
+        player,
+        singleUnit
+    }
+
     [SerializeField]
     GameObject hideTexture;
+
+    [SerializeField]
+    List<effectType> effects;
+    [SerializeField]
+    List<effectTargetType> effectTargets;
 
     public GameObject onSelectedCanvas;
 
@@ -35,6 +56,12 @@ public class Card : MonoBehaviour
         red,
         blue,
         yellow
+    }
+   
+    public enum CardType
+    {
+        creature,
+        spell
     }
 
     [SerializeField]
@@ -80,10 +107,33 @@ public class Card : MonoBehaviour
         }
     }
 
+    public CardType CardBaseType
+    {
+        get
+        {
+            return cardBaseType;
+        }
+    }
+    public List<effectType> EffectTypes
+    {
+        get
+        {
+            return effects;
+        }
+    }
+    public List<effectTargetType> EffectTargetTypes
+    {
+        get
+        {
+            return effectTargets;
+        }
+    }
     Vector3 previousPosition;
 
     [SerializeField]
     Types cardCostType = Types.red;
+    [SerializeField]
+    CardType cardBaseType = CardType.creature;
     [SerializeField]
     int cost = 1;
 

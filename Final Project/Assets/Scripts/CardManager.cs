@@ -328,7 +328,57 @@ public class CardManager : MonoBehaviour
                     break;
                 #endregion
                 case phases.play:
-                    #region play
+                    #region playSpell
+                    if (hand.selectedCard != null && hand.selectedCard.GetComponent<Card>().CardBaseType == Card.CardType.spell)
+                    {
+                        switch (hand.selectedCard.GetComponent<Card>().EffectTargetTypes[0])
+                        {
+                            case Card.effectTargetType.field:
+                                if (Input.GetMouseButtonDown(0))
+                                {
+                                    ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+                                    ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+                                    if (Physics.Raycast(ray.origin, ray.direction, out hit, 1000))
+                                    {
+                                        switch (hand.selectedCard.GetComponent<Card>().CardCostType)
+                                        {
+                                            case Card.Types.red:
+                                                if (hand.selectedCard.GetComponent<Card>().Cost <= currentRedMana)
+                                                {
+                                                    if (hit.collider.gameObject.tag == "Field")
+                                                    {
+                                                        foreach (var item in hit.collider.gameObject.GetComponent<fieldScript>().creaturesInField)
+                                                        {
+                                                            item.TakeDamage(4);
+                                                        }
+                                                        currentRedMana -= hand.selectedCard.GetComponent<Card>().Cost;
+                                                        hand.RemoveCard(hand.selectedCard);
+                                                        Destroy(hand.selectedCard);
+                                                    }
+                                                }                                                
+                                                break;
+                                            case Card.Types.blue:
+                                                break;
+                                            case Card.Types.yellow:
+                                                break;
+                                            default:
+                                                break;
+                                        }                                        
+                                    }
+                                }                                
+                                break;
+                            case Card.effectTargetType.creature:
+                                break;
+                            case Card.effectTargetType.player:
+                                break;
+                            case Card.effectTargetType.singleUnit:
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                    #endregion
+                    #region attackWithCreature
                     if (Input.GetMouseButtonDown(0) && hand.selectedCard != null)
                     {
                         switch (hand.selectedCard.GetComponent<Card>().cardTypes)
@@ -410,6 +460,7 @@ public class CardManager : MonoBehaviour
             switch (phase)
             {
                 case phases.draw:
+                    #region #enemyDrawAI
                     GameObject card;
                     card = enemyBlueDeck.GetComponent<Deck>().Draw();
                     if (card == null)
@@ -432,8 +483,10 @@ public class CardManager : MonoBehaviour
                     {
                         phase = phases.play;
                     }
+                    #endregion
                     break;
                 case phases.play:
+                    #region enemyAIPlay
                     for (int i = 0; i < enemyHand.Cards.Count; i++)
                     {
                         if (enemyHand.Cards[i].GetComponent<Card>().Cost <= currentBlueMana)
@@ -472,6 +525,7 @@ public class CardManager : MonoBehaviour
                             }
                         }
                     }
+                    #endregion
                     phase = phases.end;
                     break;
                 case phases.end:
@@ -483,7 +537,7 @@ public class CardManager : MonoBehaviour
                     playerTurn = 1;
                     phase = phases.draw;
                     break;
-                    #endregion
+                #endregion
                 default:
                     break;
             }
