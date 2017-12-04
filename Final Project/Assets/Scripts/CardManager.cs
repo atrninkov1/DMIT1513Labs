@@ -60,6 +60,17 @@ public class CardManager : MonoBehaviour
     int numberOfCardsToDraw;
     int enemyNumberOfCardsToDraw;
     int playerTurn;
+
+    bool drewBlueCard = false;
+
+    public bool DrewBlueCard
+    {
+        get
+        {
+            return drewBlueCard;
+        }
+    }
+
     enum phases
     {
         draw,
@@ -294,24 +305,31 @@ public class CardManager : MonoBehaviour
                                     maxBlueMana++;
                                     currentBlueMana++;
                                     numberOfCardsToDraw--;
+                                    drewBlueCard = true;
                                     break;
                                 case "YellowDeck":
-                                    card = Instantiate(yellowDeck.GetComponent<Deck>().Draw());
-                                    card.transform.parent = hand.gameObject.transform;
-                                    hand.AddCard(card);
-                                    card.GetComponent<Card>().SetCanvas(canvas);
-                                    maxYellowMana++;
-                                    currentYellowMana++;
-                                    numberOfCardsToDraw--;
+                                    if (drewBlueCard)
+                                    {
+                                        card = Instantiate(yellowDeck.GetComponent<Deck>().Draw());
+                                        card.transform.parent = hand.gameObject.transform;
+                                        hand.AddCard(card);
+                                        card.GetComponent<Card>().SetCanvas(canvas);
+                                        maxYellowMana++;
+                                        currentYellowMana++;
+                                        numberOfCardsToDraw--;
+                                    }
                                     break;
                                 case "RedDeck":
-                                    card = Instantiate(redDeck.GetComponent<Deck>().Draw());
-                                    card.transform.parent = hand.gameObject.transform;
-                                    hand.AddCard(card);
-                                    card.GetComponent<Card>().SetCanvas(canvas);
-                                    maxRedMana++;
-                                    currentRedMana++;
-                                    numberOfCardsToDraw--;
+                                    if (drewBlueCard)
+                                    {
+                                        card = Instantiate(redDeck.GetComponent<Deck>().Draw());
+                                        card.transform.parent = hand.gameObject.transform;
+                                        hand.AddCard(card);
+                                        card.GetComponent<Card>().SetCanvas(canvas);
+                                        maxRedMana++;
+                                        currentRedMana++;
+                                        numberOfCardsToDraw--;
+                                    }
                                     break;
                                 default:
                                     break;
@@ -351,11 +369,12 @@ public class CardManager : MonoBehaviour
                                                         {
                                                             item.TakeDamage(4);
                                                         }
+                                                        hit.collider.gameObject.GetComponent<fieldScript>().PlayAnimation();
                                                         currentRedMana -= hand.selectedCard.GetComponent<Card>().Cost;
                                                         hand.RemoveCard(hand.selectedCard);
                                                         Destroy(hand.selectedCard);
                                                     }
-                                                }                                                
+                                                }
                                                 break;
                                             case Card.Types.blue:
                                                 break;
@@ -363,9 +382,9 @@ public class CardManager : MonoBehaviour
                                                 break;
                                             default:
                                                 break;
-                                        }                                        
+                                        }
                                     }
-                                }                                
+                                }
                                 break;
                             case Card.effectTargetType.creature:
                                 break;

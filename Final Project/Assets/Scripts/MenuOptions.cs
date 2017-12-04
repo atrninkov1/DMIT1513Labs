@@ -50,6 +50,11 @@ public class MenuOptions : MonoBehaviour {
         SceneManager.LoadScene("PlayerLost");
     }
 
+    public void MainMenu()
+    {
+        SceneManager.LoadScene("MainMenu");
+    }
+
     public void SetBackgroundSound(float newSound)
     {
         mixer.SetFloat("Background",newSound);

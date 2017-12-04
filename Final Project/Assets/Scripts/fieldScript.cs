@@ -48,4 +48,9 @@ public class fieldScript : MonoBehaviour {
             }
         }
     }
+
+    public void PlayAnimation()
+    {
+        GetComponent<ParticleSystem>().Play();
+    }
 }
