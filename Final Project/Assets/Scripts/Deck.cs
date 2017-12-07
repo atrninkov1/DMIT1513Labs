@@ -8,13 +8,22 @@ public class Deck : MonoBehaviour
     [SerializeField]
     List<GameObject> Cards;
     Vector3 previousPosition;
+    public bool tutorial = true;
 
     void Start()
     {
         setPreviousPosition();
+        if (!tutorial)
+        {
+            Shuffle();
+        }
+    }
+
+    public void Shuffle()
+    {
         for (int i = 0; i < Cards.Count; i++)
         {
-            int k = Random.Range(0,Cards.Count);
+            int k = Random.Range(0, Cards.Count);
             GameObject value = Cards[k];
             Cards[k] = Cards[i];
             Cards[i] = value;

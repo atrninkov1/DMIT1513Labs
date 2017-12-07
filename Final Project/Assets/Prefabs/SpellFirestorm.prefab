@@ -620,6 +620,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f94208d9eec712f438a72db7610e5e4d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  particle: {fileID: 1880504631609640, guid: 51491777becfbda4e9140bb7fd2e5f1e, type: 2}
   hideTexture: {fileID: 1706593117327760}
   effects: 03000000
   effectTargets: 00000000

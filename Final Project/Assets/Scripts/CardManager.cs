@@ -61,6 +61,8 @@ public class CardManager : MonoBehaviour
     int enemyNumberOfCardsToDraw;
     int playerTurn;
 
+    public bool drawnSpell = false;
+
     bool drewBlueCard = false;
 
     public bool DrewBlueCard
@@ -68,6 +70,18 @@ public class CardManager : MonoBehaviour
         get
         {
             return drewBlueCard;
+        }
+    }
+
+    public bool playedBlueCard = false;
+
+    public bool playedRedCard = false;
+
+    public int NumberOfCardsToDraw
+    {
+        get
+        {
+            return numberOfCardsToDraw;
         }
     }
 
@@ -146,128 +160,145 @@ public class CardManager : MonoBehaviour
 
     public void playOnBlueField()
     {
-        switch (hand.selectedCard.GetComponent<Card>().CardCostType)
+        if (!playedBlueCard || playedRedCard)
         {
-            case Card.Types.red:
-                if (currentRedMana >= hand.selectedCard.GetComponent<Card>().Cost)
-                {
-                    currentRedMana -= hand.selectedCard.GetComponent<Card>().Cost;
-                    hand.RemoveCard(hand.selectedCard);
-                    hand.selectedCard.GetComponent<Card>().playCard(blueField.transform.position, "blue");
-                    blueField.GetComponent<fieldScript>().addCardToField(hand.selectedCard);
-                    hand.selectedCard = null;
-                    Panel.SetActive(false);
-                }
-                break;
-            case Card.Types.blue:
-                if (currentBlueMana >= hand.selectedCard.GetComponent<Card>().Cost)
-                {
-                    currentBlueMana -= hand.selectedCard.GetComponent<Card>().Cost;
-                    hand.RemoveCard(hand.selectedCard);
-                    hand.selectedCard.GetComponent<Card>().playCard(blueField.transform.position, "blue");
-                    blueField.GetComponent<fieldScript>().addCardToField(hand.selectedCard);
-                    hand.selectedCard = null;
-                    Panel.SetActive(false);
-                }
-                break;
-            case Card.Types.yellow:
-                if (currentYellowMana >= hand.selectedCard.GetComponent<Card>().Cost)
-                {
-                    currentYellowMana -= hand.selectedCard.GetComponent<Card>().Cost;
-                    hand.RemoveCard(hand.selectedCard);
-                    hand.selectedCard.GetComponent<Card>().playCard(blueField.transform.position, "blue");
-                    blueField.GetComponent<fieldScript>().addCardToField(hand.selectedCard);
-                    hand.selectedCard = null;
-                    Panel.SetActive(false);
-                }
-                break;
-            default:
-                break;
+            switch (hand.selectedCard.GetComponent<Card>().CardCostType)
+            {
+                case Card.Types.red:
+                    if (playedBlueCard)
+                    {
+                        if (currentRedMana >= hand.selectedCard.GetComponent<Card>().Cost)
+                        {
+                            currentRedMana -= hand.selectedCard.GetComponent<Card>().Cost;
+                            hand.RemoveCard(hand.selectedCard);
+                            hand.selectedCard.GetComponent<Card>().playCard(blueField.transform.position, "blue");
+                            blueField.GetComponent<fieldScript>().addCardToField(hand.selectedCard);
+                            hand.selectedCard = null;
+                            Panel.SetActive(false);
+                        }
+                    }
+                    break;
+                case Card.Types.blue:
+                    if (currentBlueMana >= hand.selectedCard.GetComponent<Card>().Cost)
+                    {
+                        currentBlueMana -= hand.selectedCard.GetComponent<Card>().Cost;
+                        hand.RemoveCard(hand.selectedCard);
+                        hand.selectedCard.GetComponent<Card>().playCard(blueField.transform.position, "blue");
+                        blueField.GetComponent<fieldScript>().addCardToField(hand.selectedCard);
+                        hand.selectedCard = null;
+                        Panel.SetActive(false);
+                        playedBlueCard = true;
+                    }
+                    break;
+                case Card.Types.yellow:
+                    if (playedBlueCard)
+                    {
+                        if (currentYellowMana >= hand.selectedCard.GetComponent<Card>().Cost)
+                        {
+                            currentYellowMana -= hand.selectedCard.GetComponent<Card>().Cost;
+                            hand.RemoveCard(hand.selectedCard);
+                            hand.selectedCard.GetComponent<Card>().playCard(blueField.transform.position, "blue");
+                            blueField.GetComponent<fieldScript>().addCardToField(hand.selectedCard);
+                            hand.selectedCard = null;
+                            Panel.SetActive(false);
+                        }
+                    }
+                    break;
+                default:
+                    break;
+            }
         }
     }
 
     public void playOnRedField()
     {
-        switch (hand.selectedCard.GetComponent<Card>().CardCostType)
+        if (playedBlueCard)
         {
-            case Card.Types.red:
-                if (currentRedMana >= hand.selectedCard.GetComponent<Card>().Cost)
-                {
-                    currentRedMana -= hand.selectedCard.GetComponent<Card>().Cost;
-                    hand.RemoveCard(hand.selectedCard);
-                    hand.selectedCard.GetComponent<Card>().playCard(redField.transform.position, "red");
-                    redField.GetComponent<fieldScript>().addCardToField(hand.selectedCard);
-                    hand.selectedCard = null;
-                    Panel.SetActive(false);
-                }
-                break;
-            case Card.Types.blue:
-                if (currentBlueMana >= hand.selectedCard.GetComponent<Card>().Cost)
-                {
-                    currentBlueMana -= hand.selectedCard.GetComponent<Card>().Cost;
-                    hand.RemoveCard(hand.selectedCard);
-                    hand.selectedCard.GetComponent<Card>().playCard(redField.transform.position, "red");
-                    redField.GetComponent<fieldScript>().addCardToField(hand.selectedCard);
-                    hand.selectedCard = null;
-                    Panel.SetActive(false);
-                }
-                break;
-            case Card.Types.yellow:
-                if (currentYellowMana >= hand.selectedCard.GetComponent<Card>().Cost)
-                {
-                    currentYellowMana -= hand.selectedCard.GetComponent<Card>().Cost;
-                    hand.RemoveCard(hand.selectedCard);
-                    hand.selectedCard.GetComponent<Card>().playCard(redField.transform.position, "red");
-                    redField.GetComponent<fieldScript>().addCardToField(hand.selectedCard);
-                    hand.selectedCard = null;
-                    Panel.SetActive(false);
-                }
-                break;
-            default:
-                break;
+            switch (hand.selectedCard.GetComponent<Card>().CardCostType)
+            {
+                case Card.Types.red:
+                    if (currentRedMana >= hand.selectedCard.GetComponent<Card>().Cost)
+                    {
+                        currentRedMana -= hand.selectedCard.GetComponent<Card>().Cost;
+                        hand.RemoveCard(hand.selectedCard);
+                        hand.selectedCard.GetComponent<Card>().playCard(redField.transform.position, "red");
+                        redField.GetComponent<fieldScript>().addCardToField(hand.selectedCard);
+                        hand.selectedCard = null;
+                        Panel.SetActive(false);
+                    }
+                    break;
+                case Card.Types.blue:
+                    if (currentBlueMana >= hand.selectedCard.GetComponent<Card>().Cost)
+                    {
+                        currentBlueMana -= hand.selectedCard.GetComponent<Card>().Cost;
+                        hand.RemoveCard(hand.selectedCard);
+                        hand.selectedCard.GetComponent<Card>().playCard(redField.transform.position, "red");
+                        redField.GetComponent<fieldScript>().addCardToField(hand.selectedCard);
+                        hand.selectedCard = null;
+                        Panel.SetActive(false);
+                    }
+                    break;
+                case Card.Types.yellow:
+                    if (currentYellowMana >= hand.selectedCard.GetComponent<Card>().Cost)
+                    {
+                        currentYellowMana -= hand.selectedCard.GetComponent<Card>().Cost;
+                        hand.RemoveCard(hand.selectedCard);
+                        hand.selectedCard.GetComponent<Card>().playCard(redField.transform.position, "red");
+                        redField.GetComponent<fieldScript>().addCardToField(hand.selectedCard);
+                        hand.selectedCard = null;
+                        Panel.SetActive(false);
+                    }
+                    break;
+                default:
+                    break;
+            }
+            playedRedCard = true;
         }
     }
 
 
     public void playOnYellowField()
     {
-        switch (hand.selectedCard.GetComponent<Card>().CardCostType)
+        if (playedBlueCard && playedRedCard)
         {
-            case Card.Types.red:
-                if (currentRedMana >= hand.selectedCard.GetComponent<Card>().Cost)
-                {
-                    currentRedMana -= hand.selectedCard.GetComponent<Card>().Cost;
-                    hand.RemoveCard(hand.selectedCard);
-                    hand.selectedCard.GetComponent<Card>().playCard(yellowField.transform.position, "yellow");
-                    yellowField.GetComponent<fieldScript>().addCardToField(hand.selectedCard);
-                    hand.selectedCard = null;
-                    Panel.SetActive(false);
-                }
-                break;
-            case Card.Types.blue:
-                if (currentBlueMana >= hand.selectedCard.GetComponent<Card>().Cost)
-                {
-                    currentBlueMana -= hand.selectedCard.GetComponent<Card>().Cost;
-                    hand.RemoveCard(hand.selectedCard);
-                    hand.selectedCard.GetComponent<Card>().playCard(yellowField.transform.position, "yellow");
-                    yellowField.GetComponent<fieldScript>().addCardToField(hand.selectedCard);
-                    hand.selectedCard = null;
-                    Panel.SetActive(false);
-                }
-                break;
-            case Card.Types.yellow:
-                if (currentYellowMana >= hand.selectedCard.GetComponent<Card>().Cost)
-                {
-                    currentYellowMana -= hand.selectedCard.GetComponent<Card>().Cost;
-                    hand.RemoveCard(hand.selectedCard);
-                    hand.selectedCard.GetComponent<Card>().playCard(yellowField.transform.position, "yellow");
-                    yellowField.GetComponent<fieldScript>().addCardToField(hand.selectedCard);
-                    hand.selectedCard = null;
-                    Panel.SetActive(false);
-                }
-                break;
-            default:
-                break;
+            switch (hand.selectedCard.GetComponent<Card>().CardCostType)
+            {
+                case Card.Types.red:
+                    if (currentRedMana >= hand.selectedCard.GetComponent<Card>().Cost)
+                    {
+                        currentRedMana -= hand.selectedCard.GetComponent<Card>().Cost;
+                        hand.RemoveCard(hand.selectedCard);
+                        hand.selectedCard.GetComponent<Card>().playCard(yellowField.transform.position, "yellow");
+                        yellowField.GetComponent<fieldScript>().addCardToField(hand.selectedCard);
+                        hand.selectedCard = null;
+                        Panel.SetActive(false);
+                    }
+                    break;
+                case Card.Types.blue:
+                    if (currentBlueMana >= hand.selectedCard.GetComponent<Card>().Cost)
+                    {
+                        currentBlueMana -= hand.selectedCard.GetComponent<Card>().Cost;
+                        hand.RemoveCard(hand.selectedCard);
+                        hand.selectedCard.GetComponent<Card>().playCard(yellowField.transform.position, "yellow");
+                        yellowField.GetComponent<fieldScript>().addCardToField(hand.selectedCard);
+                        hand.selectedCard = null;
+                        Panel.SetActive(false);
+                    }
+                    break;
+                case Card.Types.yellow:
+                    if (currentYellowMana >= hand.selectedCard.GetComponent<Card>().Cost)
+                    {
+                        currentYellowMana -= hand.selectedCard.GetComponent<Card>().Cost;
+                        hand.RemoveCard(hand.selectedCard);
+                        hand.selectedCard.GetComponent<Card>().playCard(yellowField.transform.position, "yellow");
+                        yellowField.GetComponent<fieldScript>().addCardToField(hand.selectedCard);
+                        hand.selectedCard = null;
+                        Panel.SetActive(false);
+                    }
+                    break;
+                default:
+                    break;
+            }
         }
     }
     void Update()
@@ -283,18 +314,18 @@ public class CardManager : MonoBehaviour
             {
                 case phases.draw:
                     #region Draw
-                    blueDeck.transform.position = new Vector3(Camera.main.ScreenToWorldPoint(new Vector3(Screen.width / 2, Screen.height / 2)).x - 1.2f,
+                    blueDeck.transform.position = new Vector3((Camera.main.ScreenToWorldPoint(new Vector3(Screen.width, Screen.height / 2)).x * -1) + 1.2f,
                         Camera.main.ScreenToWorldPoint(new Vector3(Screen.width / 2, Screen.height / 2)).y, blueDeck.transform.position.z);
-                    redDeck.transform.position = new Vector3(Camera.main.ScreenToWorldPoint(new Vector3(Screen.width / 2, Screen.height / 2)).x,
+                    redDeck.transform.position = new Vector3((Camera.main.ScreenToWorldPoint(new Vector3(Screen.width, Screen.height / 2)).x * -1) + 2.4f,
                         Camera.main.ScreenToWorldPoint(new Vector3(Screen.width / 2, Screen.height / 2)).y, redDeck.transform.position.z);
-                    yellowDeck.transform.position = new Vector3(Camera.main.ScreenToWorldPoint(new Vector3(Screen.width / 2, Screen.height / 2)).x + 1.2f,
+                    yellowDeck.transform.position = new Vector3((Camera.main.ScreenToWorldPoint(new Vector3(Screen.width, Screen.height / 2)).x * -1) + 3.6f,
                         Camera.main.ScreenToWorldPoint(new Vector3(Screen.width / 2, Screen.height / 2)).y, yellowDeck.transform.position.z);
                     if (Input.GetMouseButtonDown(0))
                     {
                         ray = Camera.main.ScreenPointToRay(Input.mousePosition);
                         if (Physics.Raycast(ray.origin, ray.direction, out hit, 1000))
                         {
-                            GameObject card;
+                            GameObject card = new GameObject();
                             switch (hit.collider.gameObject.tag)
                             {
                                 case "BlueDeck":
@@ -333,6 +364,10 @@ public class CardManager : MonoBehaviour
                                     break;
                                 default:
                                     break;
+                            }
+                            if (hit.collider.gameObject.tag.Contains("Deck") && card.GetComponent<Card>().CardBaseType == Card.CardType.spell)
+                            {
+                                drawnSpell = true;
                             }
                         }
                     }
@@ -418,9 +453,12 @@ public class CardManager : MonoBehaviour
                                                (hit.collider.GetComponent<Card>().cardTypes == Card.Types.yellow && enemyBlueField.GetComponent<fieldScript>().creaturesInField.Count == 0
                                                && enemyRedField.GetComponent<fieldScript>().creaturesInField.Count == 0) || hit.collider.GetComponent<Card>().cardTypes == Card.Types.blue)
                                         {
-                                            hit.collider.gameObject.GetComponent<Card>().TakeDamage(hand.selectedCard.GetComponent<Card>().Attack);
-                                            hand.selectedCard.GetComponent<Card>().HasAttacked = true;
-                                            hand.selectedCard = null;
+                                            if (hit.collider.gameObject.GetComponent<Card>().Played)
+                                            {
+                                                hit.collider.gameObject.GetComponent<Card>().TakeDamage(hand.selectedCard.GetComponent<Card>().Attack);
+                                                hand.selectedCard.GetComponent<Card>().HasAttacked = true;
+                                                hand.selectedCard = null;
+                                            }
                                         }
                                     }
                                 }

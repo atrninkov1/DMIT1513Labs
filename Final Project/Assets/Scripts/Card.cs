@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Card : MonoBehaviour
 {
+    [SerializeField]
+    GameObject particle;
 
     bool positionSet = false;
     bool positionSetOnShrink = false;
@@ -201,7 +203,7 @@ public class Card : MonoBehaviour
 
     void OnMouseDown()
     {
-        if (!played && gameObject.tag == "PlayerCreature")
+        if (!played && gameObject.tag == "PlayerCreature" && cardBaseType == CardType.creature)
         {
             previousPosition = new Vector3(transform.position.x, transform.position.y - 1f, transform.position.z);
             transform.position = new Vector3(Camera.main.ScreenToWorldPoint(new Vector3(Screen.width / 2, Screen.height / 2)).x,
@@ -280,6 +282,9 @@ public class Card : MonoBehaviour
         damageTaken = Time.time;
         if (health <= 0)
         {
+            GameObject pEmmiter = Instantiate(particle);
+            pEmmiter.transform.position = transform.position;
+            pEmmiter.GetComponent<ParticleSystem>().Play();
             Destroy(gameObject);
         }
     }

@@ -44,7 +44,8 @@ public class fieldScript : MonoBehaviour {
             }
             else
             {
-                cards[i].transform.position = new Vector3(transform.position.x + i * -1.5f, transform.position.y, -3);
+                cards[i].transform.position = new Vector3(transform.position.x + i * -1.5f, transform.position.y + 0.25f, -3);
+                cards[i].transform.localScale = new Vector3(0.75f, 0.75f, 1);
             }
         }
     }
